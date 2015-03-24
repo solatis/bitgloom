@@ -29,6 +29,18 @@ $newline never
 
   <body>
 
+    <!-- Header -->
+    <header id="header" class="skel-layers-fixed">
+      <h1><a href="@{AppR}">Bitgloom</a>
+      <nav id="nav">
+        <ul>
+          <li>
+            <a href="@{AppR}">Status
+          <li>
+            <a href="anonymize.html">Anonymize
+          <li>
+            <a href="shutdown.html" class='button'>Shutdown
+
     <!-- Main -->
     <section id="main" class="container">
       ^{pageBody pc}

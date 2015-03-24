@@ -1,5 +1,5 @@
 {-# LANGUAGE PackageImports #-}
-import "bitgloom" Application (develMain)
+import "bitgloom-www" Application (develMain)
 import Prelude (IO)
 
 main :: IO ()

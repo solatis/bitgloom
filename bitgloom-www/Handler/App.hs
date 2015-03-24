@@ -4,27 +4,27 @@ import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3,
                               withSmallInput)
 
--- This is a handler function for the GET request method on the AppR
+-- This is a handler function for the GET request method on the StatusR
 -- resource pattern. All of your resource patterns are defined in
 -- config/routes
 --
 -- The majority of the code you will write in Yesod lives in these handler
 -- functions. You can spread them across multiple files if you are so
 -- inclined, or create a single monolithic file.
-getAppR :: Handler Html
-getAppR = do
+getStatusR :: Handler Html
+getStatusR = do
     (formWidget, formEnctype) <- generateFormPost sampleForm
     let submission = Nothing :: Maybe (FileInfo, Text)
-        handlerName = "getAppR" :: Text
+        handlerName = "getStatusR" :: Text
     defaultLayout $ do
         aDomId <- newIdent
         setTitle "Welcome To Yesod!"
         $(widgetFile "application")
 
-postAppR :: Handler Html
-postAppR = do
+postStatusR :: Handler Html
+postStatusR = do
     ((result, formWidget), formEnctype) <- runFormPost sampleForm
-    let handlerName = "postAppR" :: Text
+    let handlerName = "postStatusR" :: Text
         submission = case result of
             FormSuccess res -> Just res
             _ -> Nothing

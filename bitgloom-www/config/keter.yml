@@ -12,7 +12,7 @@ stanzas:
 
     # Name of your executable. You are unlikely to need to change this.
     # Note that all file paths are relative to the keter.yml file.
-    exec: ../dist/build/bitgloom/bitgloom
+    exec: ../dist/build/bitgloom-www/bitgloom
 
     # Command line options passed to your application.
     args: []
