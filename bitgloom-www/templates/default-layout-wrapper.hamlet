@@ -31,11 +31,11 @@ $newline never
 
     <!-- Header -->
     <header id="header" class="skel-layers-fixed">
-      <h1><a href="@{AppR}">Bitgloom</a>
+      <h1><a href="@{StatusR}">Bitgloom</a>
       <nav id="nav">
         <ul>
           <li>
-            <a href="@{AppR}">Status
+            <a href="@{StatusR}">Status
           <li>
             <a href="anonymize.html">Anonymize
           <li>

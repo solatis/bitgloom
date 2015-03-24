@@ -1,4 +1,4 @@
-module Handler.App where
+module Handler.Status where
 
 import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3,

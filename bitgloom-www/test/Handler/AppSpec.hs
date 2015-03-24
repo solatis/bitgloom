@@ -5,13 +5,13 @@ import TestImport
 spec :: Spec
 spec = withApp $ do
     it "loads the index and checks it looks right" $ do
-        get AppR
+        get StatusR
         statusIs 200
         htmlAllContain "h1" "Welcome to Yesod"
 
         request $ do
             setMethod "POST"
-            setUrl AppR
+            setUrl StatusR
             addToken
             fileByLabel "Choose a file" "test/Spec.hs" "text/plain" -- talk about self-reference
             byLabel "What's on the file?" "Some Content"
