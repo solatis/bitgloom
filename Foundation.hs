@@ -2,6 +2,7 @@ module Foundation where
 
 import Import.NoFoundation
 import Text.Hamlet                 (hamletFile)
+import Text.Julius                 (juliusFile)
 import Text.Jasmine                (minifym)
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
@@ -57,8 +58,8 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            addStylesheet $ StaticR css_bootstrap_css
             $(widgetFile "default-layout")
+
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- Routes not requiring authenitcation.

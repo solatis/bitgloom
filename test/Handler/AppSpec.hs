@@ -1,17 +1,17 @@
-module Handler.HomeSpec (spec) where
+module Handler.AppSpec (spec) where
 
 import TestImport
 
 spec :: Spec
 spec = withApp $ do
     it "loads the index and checks it looks right" $ do
-        get HomeR
+        get AppR
         statusIs 200
         htmlAllContain "h1" "Welcome to Yesod"
 
         request $ do
             setMethod "POST"
-            setUrl HomeR
+            setUrl AppR
             addToken
             fileByLabel "Choose a file" "test/Spec.hs" "text/plain" -- talk about self-reference
             byLabel "What's on the file?" "Some Content"
