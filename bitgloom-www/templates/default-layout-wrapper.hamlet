@@ -24,9 +24,6 @@ $newline never
 
     <!--[if lte IE 8]><link rel="stylesheet" href="@{StaticR css_ie_v8_css}" /><![endif]-->
 
-    <script>
-      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
-
   <body>
 
     <!-- Header -->
@@ -39,7 +36,9 @@ $newline never
           <li>
             <a href="anonymize.html">Anonymize
           <li>
-            <a href="shutdown.html" class='button'>Shutdown
+            <a href="@{ConfigurationR}">Configuration
+          <li>
+            <a href="shutdown.html" class="button">Shutdown
 
     <!-- Main -->
     <section id="main" class="container">

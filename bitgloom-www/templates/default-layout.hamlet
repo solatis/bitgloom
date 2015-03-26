@@ -1,3 +1,5 @@
 $maybe msg <- mmsg
-  <div #message>#{msg}
+  <div align="center">
+    <a href="@{StatusR}" class="button icon fa-check-circle">#{msg}
+  <p>
 ^{widget}

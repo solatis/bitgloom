@@ -1,40 +1,27 @@
 module Handler.Status where
 
 import Import
-import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3,
-                              withSmallInput)
+import State.Configuration
 
--- This is a handler function for the GET request method on the StatusR
--- resource pattern. All of your resource patterns are defined in
--- config/routes
---
--- The majority of the code you will write in Yesod lives in these handler
--- functions. You can spread them across multiple files if you are so
--- inclined, or create a single monolithic file.
+import Data.Acid
+
 getStatusR :: Handler Html
 getStatusR = do
-    (formWidget, formEnctype) <- generateFormPost sampleForm
-    let submission = Nothing :: Maybe (FileInfo, Text)
-        handlerName = "getStatusR" :: Text
-    defaultLayout $ do
-        aDomId <- newIdent
-        setTitle "Welcome To Yesod!"
-        $(widgetFile "application")
+  master <- getYesod
+  config <- liftIO $ query (appConfiguration master) QueryConfiguration
+  errorE <- testServices config
 
-postStatusR :: Handler Html
-postStatusR = do
-    ((result, formWidget), formEnctype) <- runFormPost sampleForm
-    let handlerName = "postStatusR" :: Text
-        submission = case result of
-            FormSuccess res -> Just res
-            _ -> Nothing
+  defaultLayout $ do
+    setTitle "Status"
+    $(widgetFile "status")
 
-    defaultLayout $ do
-        aDomId <- newIdent
-        setTitle "Welcome To Yesod!"
-        $(widgetFile "application")
+-- | Validates whether all services are reachable
+testServices :: MonadIO m => ConfigurationState -> m (Either String ())
+testServices config =
+  let testI2p :: String -> Int -> m (Either String ())
+      testI2p host port = undefined
 
-sampleForm :: Form (FileInfo, Text)
-sampleForm = renderBootstrap3 BootstrapBasicForm $ (,)
-    <$> fileAFormReq "Choose a file"
-    <*> areq textField (withSmallInput "What's on the file?") Nothing
+  in do
+    i2pWorks <- testI2p (i2pHost config) (i2pPort config)
+
+    return (i2pWorks)

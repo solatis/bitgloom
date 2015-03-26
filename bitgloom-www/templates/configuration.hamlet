@@ -1,0 +1,32 @@
+<header>
+  <h2>Configuration
+
+<div class="box">
+  <form method="post" action=@{ConfigurationR}>
+    <h3>I2P daemon
+    <div class="row uniform 50%">
+      <div class="9u 12u(mobilep)">
+        <input type="text" name="i2pHost" value="#{i2pHost config}">
+
+      <div class="3u 12u(mobilep)">
+        <input type="text" name="i2pPort" value="#{show $ i2pPort config}">
+
+    <p>
+
+    <h3>Bitcoin daemon
+    <div class="row uniform 50%">
+      <div class="9u 12u(mobilep)">
+        <input type="text" name="btcHost" value="#{btcHost config}">
+
+      <div class="3u 12u(mobilep)">
+        <input type="text" name="btcPort" value="#{show $ btcPort config}">
+
+    <p>
+
+    <div class="row uniform">
+      <div class="12u">
+        <ul class="actions">
+          <li>
+            <input type="submit" style="special" value="Update configuration">
+          <li>
+            <input type="reset" value="Reset" class="alt">

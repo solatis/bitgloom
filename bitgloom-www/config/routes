@@ -3,4 +3,5 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ StatusR GET POST
+/ StatusR GET
+/configuration ConfigurationR GET POST

@@ -17,5 +17,7 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # mutable-static: false
 # skip-combining: false
 
+state-dir:      "db/"
+
 #copyright: Copyright 2015 Leon Mergen
 #analytics: UA-YOURCODE

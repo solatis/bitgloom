@@ -1,0 +1,16 @@
+name:              bitgloom-i2p
+version:           0.0.1
+cabal-version:     >= 1.18
+build-type:        Simple
+
+library
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  ghc-options:         -Wall -ferror-spans -auto-all -caf-all
+
+  exposed-modules:     Bitgloom.I2P
+
+  build-depends:       base                     >= 4.3          && < 5
+
+                     , network-anonymous-i2p
+

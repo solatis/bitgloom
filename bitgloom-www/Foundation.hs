@@ -2,21 +2,24 @@ module Foundation where
 
 import Import.NoFoundation
 import Text.Hamlet                 (hamletFile)
-import Text.Julius                 (juliusFile)
 import Text.Jasmine                (minifym)
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
 import qualified Yesod.Core.Unsafe as Unsafe
+
+import Data.Acid (AcidState)
+import State.Configuration (ConfigurationState)
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
 -- starts running, such as database connections. Every handler will have
 -- access to the data present here.
 data App = App
-    { appSettings    :: AppSettings
-    , appStatic      :: Static -- ^ Settings for static file serving.
-    , appHttpManager :: Manager
-    , appLogger      :: Logger
+    { appSettings      :: AppSettings
+    , appStatic        :: Static -- ^ Settings for static file serving.
+    , appHttpManager   :: Manager
+    , appLogger        :: Logger
+    , appConfiguration :: AcidState ConfigurationState
     }
 
 instance HasHttpManager App where
@@ -49,7 +52,7 @@ instance Yesod App where
 
     defaultLayout widget = do
         master <- getYesod
-        mmsg <- getMessage
+        mmsg   <- getMessage
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and

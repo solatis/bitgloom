@@ -19,8 +19,10 @@ library
                      Import.NoFoundation
                      Settings
                      Settings.StaticFiles
+                     State.Configuration
                      Handler.Common
                      Handler.Status
+                     Handler.Configuration
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -70,6 +72,9 @@ library
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.2        && < 2.4
                  , wai-logger                    >= 2.2        && < 2.3
+                 , acid-state
+                 , safecopy
+                 , mtl
                  , file-embed
                  , safe
                  , unordered-containers
@@ -77,7 +82,9 @@ library
                  , vector
                  , time
 
-executable         bitgloom
+                 , network-anonymous-i2p
+
+executable         bitgloom-www
     if flag(library-only)
         Buildable: False
 
