@@ -19,8 +19,10 @@ postConfigurationR = do
   master <- getYesod
 
   config <- runInputPost $ ConfigurationState
-            <$> ireq textField "i2pHost"
-            <*> ireq intField  "i2pPort"
+            <$> ireq textField "i2pTcpHost"
+            <*> ireq intField  "i2pTcpPort"
+            <*> ireq textField "i2pUdpHost"
+            <*> ireq intField  "i2pUdpPort"
             <*> ireq textField "btcHost"
             <*> ireq intField  "btcPort"
 

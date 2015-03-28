@@ -22,6 +22,6 @@ testServices config =
       testI2p host port = undefined
 
   in do
-    i2pWorks <- testI2p (i2pHost config) (i2pPort config)
+    --i2pWorks <- testI2p (i2pHost config) (i2pPort config)
 
-    return (i2pWorks)
+    return (Right ())

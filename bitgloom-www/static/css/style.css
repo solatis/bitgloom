@@ -970,6 +970,32 @@ input[type="button"].special:active,
   background-color: #e4886a;
 }
 
+
+
+input[type="submit"].ok,
+input[type="reset"].ok,
+input[type="button"].ok,
+.button.ok {
+  background-color: #69CC66;
+  color: #ffffff !important;
+}
+
+input[type="submit"].ok:hover,
+input[type="reset"].ok:hover,
+input[type="button"].ok:hover,
+.button.ok:hover {
+  background-color: #83E880;
+}
+
+input[type="submit"].ok:active,
+input[type="reset"].ok:active,
+input[type="button"].ok:active,
+.button.ok:active {
+  background-color: #54B350;
+}
+
+
+
 input[type="submit"].disabled, input[type="submit"]:disabled,
 input[type="reset"].disabled,
 input[type="reset"]:disabled,
