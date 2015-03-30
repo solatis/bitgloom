@@ -1,6 +1,6 @@
 name:              bitgloom-i2p
 version:           0.0.1
-cabal-version:     >= 1.18
+cabal-version:     >= 1.10
 build-type:        Simple
 
 library

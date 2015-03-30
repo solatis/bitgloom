@@ -1,7 +1,79 @@
 <header>
   <h2>Status
   <p>
-    <a href="#" class="button special icon fa-check-circle">
-      Ready to serve
-    <!-- <a href="#" class="button icon fa-exclamation-circle">
-      Configuration error -->
+    $if readyToServe
+      <a href="#" class="button special icon fa-check-circle">
+        Ready to serve
+    $else
+      <a href="#" class="button icon fa-exclamation-circle">
+        Configuration error
+
+<div class="box">
+  $case i2pStatus
+    $of I2P.Available
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="3u 12u(mobilep)">
+          <h3>
+            I2P
+
+        <div class="6u 12u(mobilep)">
+          <span class="button icon fa-check-circle ok"> OK
+
+    $of I2P.ConnectionRefused
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="3u 12u(mobilep)">
+          <h3>
+            I2P
+
+        <div class="6u 12u(mobilep)">
+          <span class="button icon fa-exclamation-circle"> ERROR
+
+
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="6u 12u(mobilep)">
+          <p>
+            The connection was refused while attempting to establish a connection. This most likely means that the I2P service is not running, or that the SAM bridge has not yet opened.
+
+          <p>
+            To validate whether your SAM bridge is running, please go to <a href='http://localhost:7657/configclients'>I2P's Hidden Services Manager</a> and ensure the "SAM application bridge" is running.
+
+          <p>
+            If you are confident that the I2P SAM bridge is running, please go to the <a href='@{ConfigurationR}'>Bitgloom configuration</a> and ensure you have provided the correct port.
+
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+    $of I2P.IncorrectPort
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="3u 12u(mobilep)">
+          <h3>
+            I2P
+
+        <div class="6u 12u(mobilep)">
+          <span class="button icon fa-exclamation-circle"> ERROR
+
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="6u 12u(mobilep)">
+          <p>
+            A communication error has occured while attempting to talk to the I2P daemon. This most likely means that your I2P daemon is running, but you provided an incorrect port.
+
+          <p>
+            Please ensure your <a href='http://localhost:7657/configclients'>I2P SAM application bridge</a> is running at the same port that you provided at <a href='@{ConfigurationR}'>Bitgloom's configuration</a>.
+
+        <div class="3u 12u(mobilep)">
+          &nbsp;

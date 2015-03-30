@@ -72,8 +72,6 @@ library
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.2        && < 2.4
                  , wai-logger                    >= 2.2        && < 2.3
-                 , acid-state
-                 , safecopy
                  , mtl
                  , file-embed
                  , safe
@@ -82,7 +80,11 @@ library
                  , vector
                  , time
 
+                 , acid-state
+                 , safecopy                 
+                 
                  , network-anonymous-i2p
+                 , bitgloom-i2p
 
 executable         bitgloom-www
     if flag(library-only)

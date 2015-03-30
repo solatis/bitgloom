@@ -6,7 +6,7 @@ import Control.Concurrent.MVar
 import qualified System.IO.Error as E
 import qualified GHC.IO.Exception as E
 
-import Network.Anonymous.I2P (defaultEndPoint, withSession)
+import Network.Anonymous.I2P (defaultEndPoint, createDestination)
 import Network.Anonymous.I2P.Types.Sam
 import Network.Anonymous.I2P.Types.Socket
 import Network.Anonymous.I2P.Error
@@ -28,6 +28,10 @@ isAvailable host port =
     endPoint :: EndPoints
     endPoint = defaultEndPoint { tcp = (host, show port) }
 
+    performTest errMsg = do
+      _ <- createDestination endPoint Nothing
+      putMVar errMsg Available
+
   in do
     errMsg <- liftIO $ newEmptyMVar
 
@@ -38,8 +42,7 @@ isAvailable host port =
                         if   (E.ioeGetErrorType e) == E.OtherError
                         then (putMVar errMsg ConnectionRefused)
                         else E.ioError e)
-        (withSession endPoint VirtualStream (\_ ->
-                                              liftIO $ putMVar errMsg Available))
+        (performTest errMsg)
 
     res <- liftIO $ takeMVar errMsg
     return res

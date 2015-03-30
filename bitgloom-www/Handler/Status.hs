@@ -2,26 +2,24 @@ module Handler.Status where
 
 import Import
 import State.Configuration
+import qualified Bitgloom.I2P as I2P
+import qualified Data.Text as T (unpack)
 
 import Data.Acid
 
 getStatusR :: Handler Html
 getStatusR = do
-  master <- getYesod
-  config <- liftIO $ query (appConfiguration master) QueryConfiguration
-  errorE <- testServices config
+  master    <- getYesod
+  config    <- liftIO $ query (appConfiguration master) QueryConfiguration
+  i2pStatus <- testI2P config
+
+  let readyToServe = (i2pStatus == I2P.Available)
 
   defaultLayout $ do
     setTitle "Status"
     $(widgetFile "status")
 
--- | Validates whether all services are reachable
-testServices :: MonadIO m => ConfigurationState -> m (Either String ())
-testServices config =
-  let testI2p :: String -> Int -> m (Either String ())
-      testI2p host port = undefined
-
-  in do
-    --i2pWorks <- testI2p (i2pHost config) (i2pPort config)
-
-    return (Right ())
+-- | Validates whether I2P is available
+testI2P :: MonadIO m => ConfigurationState -> m I2P.Availability
+testI2P config =
+  I2P.isAvailable ((T.unpack . i2pTcpHost) config) (i2pTcpPort config)
