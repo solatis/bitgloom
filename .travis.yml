@@ -30,10 +30,10 @@ before_install:
  - sudo service i2p start
 
 # Installing bitcoind and bitcoin-cli from source
- - travis_retry sudo apt-get install -y build-essential libssl-dev libboost-all-dev libdb5.1-dev libdb5.1++-dev libgtk2.0-dev
+ - travis_retry sudo apt-get install -y build-essential libssl-dev libboost-all-dev libdb4.8-dev libdb4.8++-dev libgtk2.0-dev
 
  - travis_retry wget https://bitcoin.org/bin/bitcoin-core-0.10.0/bitcoin-0.10.0.tar.gz
- - tar -xzf bitcoin-0.10.0.tar.gz && cd bitcoin-0.10.0 && ./configure --disable-tests --with-incompatible-bdb && make && sudo make install
+ - tar -xzf bitcoin-0.10.0.tar.gz && cd bitcoin-0.10.0 && ./configure --disable-tests --with-gui=no && make && sudo make install
  - which bitcoind
  - which bitcoin-cli
  
