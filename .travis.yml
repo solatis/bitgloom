@@ -34,6 +34,7 @@ before_install:
 
  - travis_retry wget https://bitcoin.org/bin/bitcoin-core-0.10.0/bitcoin-0.10.0.tar.gz
  - tar -xzf bitcoin-0.10.0.tar.gz && cd bitcoin-0.10.0 && ./configure --disable-tests --with-gui=no && make && sudo make install
+ - rm -rf bitcoin-0.10.0
  - which bitcoind
  - which bitcoin-cli
  
