@@ -38,6 +38,8 @@ before_install:
  - which bitcoin-cli
  
  - bitcoind -regtest -rpc-user=user -rpc-password=pass -daemon
+ - bitcoin-cli -regtest -rpc-user=user -rpc-password=pass setgenerate true 101
+ - bitcoin-cli -regtest -rpc-user=user -rpc-password=pass getbalance
  
 # Installing cabal and ghc
  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER # see note about happy/alex
