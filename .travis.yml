@@ -55,7 +55,6 @@ before_install:
    fi
 
  - cabal install hlint 
- - cabal install cabal-meta
 
 # Wait until SAM and BOB bridges are open
  - nc -zvv localhost 7656; out=$?; while [[ $out -ne 0 ]]; do echo "Retry hit port 7656..."; nc -zvv localhost 7656; out=$?; sleep 1; done
@@ -69,12 +68,17 @@ before_install:
 install:
  - cabal --version
  - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
- - cabal-meta install --only-dependencies --enable-tests --enable-benchmarks --force-reinstalls
-# - travis_retry cabal install --only-dependencies --enable-tests --enable-benchmarks -j
+
+ - cd bitgloom-btc/ && cabal sandbox init && cabal install --only-dependencies --enable-tests
+ - cd bitgloom-i2p/ && cabal sandbox init && cabal install --only-dependencies --enable-tests
+ - cd bitgloom-www/ && cabal sandbox init && cabal install --only-dependencies --enable-tests
 
 script:
  - hlint bitgloom-btc/src --ignore="Parse error"
  - hlint bitgloom-i2p/src --ignore="Parse error"
  - hlint bitgloom-www/src --ignore="Parse error"
+
+ - cd bitgloom-btc/ && cabal test --show-details=streaming
+ - cd bitgloom-i2p/ && cabal test --show-details=streaming
 
  - cabal-meta install --run-tests
