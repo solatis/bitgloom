@@ -74,6 +74,6 @@ install:
 script:
  - hlint bitgloom-btc/src --ignore="Parse error"
  - hlint bitgloom-i2p/src --ignore="Parse error"
- - hlint bitgloom-www --ignore="Parse error"
+ - hlint bitgloom-www --ignore="Parse error" --ignore="Reduce duplication"
 
  - cabal-meta install --run-tests

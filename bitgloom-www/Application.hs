@@ -53,7 +53,7 @@ makeFoundation appSettings = do
         (if appMutableStatic appSettings then staticDevel else static)
         (appStaticDir appSettings)
 
-    appConfiguration <- openLocalStateFrom ((appStateDir appSettings) ++ "/configuration/") defaultConfiguration
+    appConfiguration <- openLocalStateFrom (appStateDir appSettings ++ "/configuration/") defaultConfiguration
 
     -- Return the foundation
     return App {..}

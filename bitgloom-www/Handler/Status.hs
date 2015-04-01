@@ -13,7 +13,7 @@ getStatusR = do
   config    <- liftIO $ query (appConfiguration master) QueryConfiguration
   i2pStatus <- testI2P config
 
-  let readyToServe = (i2pStatus == I2P.Available)
+  let readyToServe = i2pStatus == I2P.Available
 
   defaultLayout $ do
     setTitle "Status"
