@@ -33,7 +33,7 @@ before_install:
  - travis_retry sudo apt-get install -y build-essential libssl-dev libboost-all-dev libdb4.8-dev libdb4.8++-dev libgtk2.0-dev
 
  - travis_retry wget https://bitcoin.org/bin/bitcoin-core-0.10.0/bitcoin-0.10.0.tar.gz
- - tar -xzf bitcoin-0.10.0.tar.gz && cd bitcoin-0.10.0 && ./configure --disable-tests --with-gui=no && make && sudo make install
+ - tar -xzf bitcoin-0.10.0.tar.gz && cd bitcoin-0.10.0 && ./configure --disable-tests --with-gui=no && make && sudo make install && cd ..
  - rm -rf bitcoin-0.10.0
  - which bitcoind
  - which bitcoin-cli
@@ -55,12 +55,13 @@ before_install:
    fi
 
  - cabal install hlint 
+ - cabal install cabal-meta
 
 # Wait until SAM and BOB bridges are open
  - nc -zvv localhost 7656; out=$?; while [[ $out -ne 0 ]]; do echo "Retry hit port 7656..."; nc -zvv localhost 7656; out=$?; sleep 1; done
  - nc -zvv localhost 2827; out=$?; while [[ $out -ne 0 ]]; do echo "Retry hit port 2827..."; nc -zvv localhost 2827; out=$?; sleep 1; done
 
-# Generate some initial bitcoins
+# Generate some initial blocks
  - bitcoin-cli -regtest -rpcuser=user -rpc-password=pass setgenerate true 101
  - bitcoin-cli -regtest -rpcuser=user -rpc-password=pass getbalance
 
@@ -68,17 +69,12 @@ before_install:
 install:
  - cabal --version
  - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
-
- - cd bitgloom-btc/ && cabal sandbox init && cabal install --only-dependencies --enable-tests
- - cd bitgloom-i2p/ && cabal sandbox init && cabal install --only-dependencies --enable-tests
- - cd bitgloom-www/ && cabal sandbox init && cabal install --only-dependencies --enable-tests
+ - cabal-meta install --only-dependencies --enable-tests --enable-benchmarks --force-reinstalls
+# - travis_retry cabal install --only-dependencies --enable-tests --enable-benchmarks -j
 
 script:
  - hlint bitgloom-btc/src --ignore="Parse error"
  - hlint bitgloom-i2p/src --ignore="Parse error"
  - hlint bitgloom-www/src --ignore="Parse error"
-
- - cd bitgloom-btc/ && cabal test --show-details=streaming
- - cd bitgloom-i2p/ && cabal test --show-details=streaming
 
  - cabal-meta install --run-tests
