@@ -38,7 +38,7 @@ before_install:
  - which bitcoind
  - which bitcoin-cli
  
- - bitcoind -regtest -rpcuser=user -rpc-password=pass -daemon
+ - bitcoind -regtest -rpcuser=user -rpcpassword=pass -daemon
  
 # Installing cabal and ghc
  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER # see note about happy/alex
@@ -62,9 +62,8 @@ before_install:
  - nc -zvv localhost 2827; out=$?; while [[ $out -ne 0 ]]; do echo "Retry hit port 2827..."; nc -zvv localhost 2827; out=$?; sleep 1; done
 
 # Generate some initial blocks
- - bitcoin-cli -regtest -rpcuser=user -rpc-password=pass setgenerate true 101
- - bitcoin-cli -regtest -rpcuser=user -rpc-password=pass getbalance
-
+ - bitcoin-cli -regtest -rpcuser=user -rpcpassword=pass setgenerate true 101
+ - bitcoin-cli -regtest -rpcuser=user -rpcpassword=pass getbalance
 
 install:
  - cabal --version
