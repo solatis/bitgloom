@@ -23,16 +23,15 @@ data Availability =
 isAvailable :: MonadIO m => String -> Int -> BS.ByteString -> BS.ByteString -> m Availability
 isAvailable host port user pass =
   let performTest errMsg = do
-        client <- getClient ("http://" ++ host ++ ":" ++ (show port)) user pass
+        client <- getClient ("http://" ++ host ++ ":" ++ show port) user pass
         _      <- getBitcoindInfo client
         putMVar errMsg Available
 
-
-      handleExceptions errMsg (FailedConnectionException2 _ _ _ _) = putMVar errMsg ConnectionRefused
-      handleExceptions errMsg (StatusCodeException statusUnauthorized _ _) = putMVar errMsg Unauthorized
+      handleExceptions errMsg (FailedConnectionException2 {}) = putMVar errMsg ConnectionRefused
+      handleExceptions errMsg (StatusCodeException {}) = putMVar errMsg Unauthorized
 
   in do
-    errMsg <- liftIO $ newEmptyMVar
+    errMsg <- liftIO newEmptyMVar
 
     threadId <- liftIO $ forkIO $
       handle

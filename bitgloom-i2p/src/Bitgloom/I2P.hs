@@ -33,16 +33,15 @@ isAvailable host port =
       putMVar errMsg Available
 
   in do
-    errMsg <- liftIO $ newEmptyMVar
+    errMsg <- liftIO newEmptyMVar
 
     liftIO $
       handle (\(I2PError ProtocolError) -> putMVar errMsg IncorrectPort)
       $ handleIOError (\e  ->
                         -- The error raised for a Connection Refused is a very descriptive OtherError
-                        if   (E.ioeGetErrorType e) == E.OtherError || (E.ioeGetErrorType e) == E.NoSuchThing
-                        then (putMVar errMsg ConnectionRefused)
+                        if   E.ioeGetErrorType e == E.OtherError || E.ioeGetErrorType e == E.NoSuchThing
+                        then putMVar errMsg ConnectionRefused
                         else E.ioError e)
         (performTest errMsg)
 
-    res <- liftIO $ takeMVar errMsg
-    return res
+    liftIO $ takeMVar errMsg
