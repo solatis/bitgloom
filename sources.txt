@@ -1,0 +1,2 @@
+./bitgloom-btc
+./bitgloom-i2p
