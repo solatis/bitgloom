@@ -39,7 +39,7 @@ isAvailable host port =
       handle (\(I2PError ProtocolError) -> putMVar errMsg IncorrectPort)
       $ handleIOError (\e  ->
                         -- The error raised for a Connection Refused is a very descriptive OtherError
-                        if   (E.ioeGetErrorType e) == E.OtherError
+                        if   (E.ioeGetErrorType e) == E.OtherError || (E.ioeGetErrorType e) == E.NoSuchThing
                         then (putMVar errMsg ConnectionRefused)
                         else E.ioError e)
         (performTest errMsg)
