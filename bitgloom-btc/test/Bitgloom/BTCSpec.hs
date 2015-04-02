@@ -14,3 +14,5 @@ spec = do
       isAvailable "127.0.0.1" 1234  "user" "pass" `shouldReturn` ConnectionRefused
     it "should return error when providing invalid authentication info" $
       isAvailable "127.0.0.1" 18332  "nouser" "nopass" `shouldReturn` Unauthorized
+    it "should return error when providing the wrong port" $
+      isAvailable "127.0.0.1" 7656  "user" "pass" `shouldReturn` IncorrectPort

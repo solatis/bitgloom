@@ -29,6 +29,7 @@ isAvailable host port user pass =
 
       handleExceptions errMsg (FailedConnectionException2 {}) = putMVar errMsg ConnectionRefused
       handleExceptions errMsg (StatusCodeException {}) = putMVar errMsg Unauthorized
+      handleExceptions errMsg (InvalidStatusLine {}) = putMVar errMsg IncorrectPort
 
   in do
     errMsg <- liftIO newEmptyMVar
