@@ -9,25 +9,31 @@ import Data.Acid
 import Data.SafeCopy
 import Data.Text
 
-type Host = Text
+type Host = String
 type Port = Int
 
-data ConfigurationState = ConfigurationState {
-  i2pTcpHost  :: Host,
-  i2pTcpPort  :: Port,
-  i2pUdpHost  :: Host,
-  i2pUdpPort  :: Port,
+data Endpoint = Endpoint {
+  host :: Host,
+  port :: Port
+  } deriving (Typeable)
 
-  btcHost     :: Host,
-  btcPort     :: Port,
-  btcUsername :: Text,
-  btcPassword :: Text
+instance Show Endpoint where
+  show (Endpoint host port) = host ++ ":" ++ (show port)
+
+data ConfigurationState = ConfigurationState {
+  i2pTcpEndpoint :: Endpoint,
+  i2pUdpEndpoint :: Endpoint,
+
+  btcEndpoint    :: Endpoint,
+  btcUsername    :: Text,
+  btcPassword    :: Text
   } deriving (Show, Typeable)
 
 defaultConfiguration :: ConfigurationState
 defaultConfiguration =
-  ConfigurationState "127.0.0.1" 7656 "127.0.0.1" 7655 "127.0.0.1" 8332 empty empty
+  ConfigurationState (Endpoint "127.0.0.1" 7656) (Endpoint "127.0.0.1" 7655) (Endpoint "127.0.0.1" 8332) empty empty
 
+$(deriveSafeCopy 0 'base ''Endpoint)
 $(deriveSafeCopy 0 'base ''ConfigurationState)
 
 updateConfiguration :: ConfigurationState -> Update ConfigurationState ()

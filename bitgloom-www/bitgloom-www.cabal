@@ -79,6 +79,7 @@ library
                  , containers
                  , vector
                  , time
+                 , attoparsec
 
                  , acid-state
                  , safecopy                 

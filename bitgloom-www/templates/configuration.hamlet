@@ -6,43 +6,34 @@
     <h3>I2P daemon
     <div class="row uniform 50%">
       <div class="3u 12u(mobilep)">
-        <b>
+        <label for="i2pTcpEndpoint">
           TCP endpoint
 
-      <div class="4u 12u(mobilep)">
-        <input type="text" name="i2pTcpHost" value="#{i2pTcpHost config}">
-
-      <div class="2u 12u(mobilep)">
-        <input type="text" name="i2pTcpPort" value="#{show $ i2pTcpPort config}">
+      <div class="6u 12u(mobilep)">
+        <input type="text" name="i2pTcpEndpoint" value="#{show $ i2pTcpEndpoint config}">
 
     <div class="row uniform 50%">
       <div class="3u 12u(mobilep)">
-        <b>
+        <label for="i2pUdpEndpoint">
           UDP endpoint
 
-      <div class="4u 12u(mobilep)">
-        <input type="text" name="i2pUdpHost" value="#{i2pUdpHost config}">
-
-      <div class="2u 12u(mobilep)">
-        <input type="text" name="i2pUdpPort" value="#{show $ i2pUdpPort config}">
+      <div class="6u 12u(mobilep)">
+        <input type="text" name="i2pUdpEndpoint" value="#{show $ i2pUdpEndpoint config}">
 
     <p>
 
     <h3>Bitcoin daemon
     <div class="row uniform 50%">
       <div class="3u 12u(mobilep)">
-        <b>
+        <label for="btcEndpoint">
           Endpoint
 
       <div class="4u 12u(mobilep)">
-        <input type="text" name="btcHost" value="#{btcHost config}">
-
-      <div class="2u 12u(mobilep)">
-        <input type="text" name="btcPort" value="#{show $ btcPort config}">
+        <input type="text" name="btcEndpoint" value="#{show $ btcEndpoint config}">
 
     <div class="row uniform 50%">
       <div class="3u 12u(mobilep)">
-        <b>
+        <label for="btcUsername">
           Username
 
       <div class="4u 12u(mobilep)">
@@ -50,7 +41,7 @@
 
     <div class="row uniform 50%">
       <div class="3u 12u(mobilep)">
-        <b>
+        <label for="btcPassword">
           Password
 
       <div class="4u 12u(mobilep)">
