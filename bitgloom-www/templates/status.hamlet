@@ -74,3 +74,97 @@
 
         <div class="3u 12u(mobilep)">
           &nbsp;
+
+
+  $case btcStatus
+    $of BTC.Available
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="3u 12u(mobilep)">
+          <h3>
+            BTC
+
+        <div class="6u 12u(mobilep)">
+          <span class="button icon fa-check-circle ok"> OK
+
+    $of BTC.ConnectionRefused
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="3u 12u(mobilep)">
+          <h3>
+            BTC
+
+        <div class="6u 12u(mobilep)">
+          <span class="button icon fa-exclamation-circle"> ERROR
+
+
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="6u 12u(mobilep)">
+          <p>
+            The connection was refused while attempting to establish a connection. This most likely means you either do not have the Bitcoin daemon running, or you haven't enabled the RPC interace.
+
+          <p>
+            If you are confident that the Bitcoin RPC interface is running, please go to the <a href='@{ConfigurationR}'>Bitgloom configuration</a> and ensure you have provided the correct port.
+
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+
+    $of BTC.IncorrectPort
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="3u 12u(mobilep)">
+          <h3>
+            BTC
+
+        <div class="6u 12u(mobilep)">
+          <span class="button icon fa-exclamation-circle"> ERROR
+
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="6u 12u(mobilep)">
+          <p>
+            A communication error has occured while attempting to talk to the BTC daemon. This means that there is a service listening on the port you provided, but it is not the BTC RPC port; you most likely provided an incorrect port.
+
+          <p>
+            Please ensure your BTC RPC handler is running at the same port that you provided at <a href='@{ConfigurationR}'>Bitgloom's configuration</a>.
+
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+    $of BTC.Unauthorized
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="3u 12u(mobilep)">
+          <h3>
+            BTC
+
+        <div class="6u 12u(mobilep)">
+          <span class="button icon fa-exclamation-circle"> ERROR
+
+      <div class="row uniform 50%">
+        <div class="3u 12u(mobilep)">
+          &nbsp;
+
+        <div class="6u 12u(mobilep)">
+          <p>
+            You are not authorized to talk to the Bitcoin RPC handler. This most likely means you provided an incorrect username or password.
+
+          <p>
+            Please ensure your Bitcoin RPC credentials you provided at <a href='@{ConfigurationR}'>Bitgloom's configuration</a> are correct.
+
+        <div class="3u 12u(mobilep)">
+          &nbsp;

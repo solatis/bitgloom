@@ -25,6 +25,8 @@ postConfigurationR = do
             <*> ireq intField  "i2pUdpPort"
             <*> ireq textField "btcHost"
             <*> ireq intField  "btcPort"
+            <*> ireq textField "btcUsername"
+            <*> ireq textField "btcPassword"
 
   $(logDebug) "Now updating Configuration acid-state"
 

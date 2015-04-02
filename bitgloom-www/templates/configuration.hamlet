@@ -5,27 +5,57 @@
   <form method="post" action=@{ConfigurationR}>
     <h3>I2P daemon
     <div class="row uniform 50%">
-      <div class="9u 12u(mobilep)">
+      <div class="3u 12u(mobilep)">
+        <b>
+          TCP endpoint
+
+      <div class="4u 12u(mobilep)">
         <input type="text" name="i2pTcpHost" value="#{i2pTcpHost config}">
 
-      <div class="3u 12u(mobilep)">
+      <div class="2u 12u(mobilep)">
         <input type="text" name="i2pTcpPort" value="#{show $ i2pTcpPort config}">
 
     <div class="row uniform 50%">
-      <div class="9u 12u(mobilep)">
+      <div class="3u 12u(mobilep)">
+        <b>
+          UDP endpoint
+
+      <div class="4u 12u(mobilep)">
         <input type="text" name="i2pUdpHost" value="#{i2pUdpHost config}">
 
-      <div class="3u 12u(mobilep)">
+      <div class="2u 12u(mobilep)">
         <input type="text" name="i2pUdpPort" value="#{show $ i2pUdpPort config}">
+
     <p>
 
     <h3>Bitcoin daemon
     <div class="row uniform 50%">
-      <div class="9u 12u(mobilep)">
+      <div class="3u 12u(mobilep)">
+        <b>
+          Endpoint
+
+      <div class="4u 12u(mobilep)">
         <input type="text" name="btcHost" value="#{btcHost config}">
 
-      <div class="3u 12u(mobilep)">
+      <div class="2u 12u(mobilep)">
         <input type="text" name="btcPort" value="#{show $ btcPort config}">
+
+    <div class="row uniform 50%">
+      <div class="3u 12u(mobilep)">
+        <b>
+          Username
+
+      <div class="4u 12u(mobilep)">
+        <input type="text" name="btcUsername" value="#{btcUsername config}">
+
+    <div class="row uniform 50%">
+      <div class="3u 12u(mobilep)">
+        <b>
+          Password
+
+      <div class="4u 12u(mobilep)">
+        <input type="password" name="btcPassword" value="#{btcPassword config}">
+
 
     <p>
 
