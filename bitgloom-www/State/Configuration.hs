@@ -18,7 +18,7 @@ data Endpoint = Endpoint {
   } deriving (Typeable)
 
 instance Show Endpoint where
-  show (Endpoint host port) = host ++ ":" ++ (show port)
+  show (Endpoint host port) = host ++ ":" ++ show port
 
 data ConfigurationState = ConfigurationState {
   i2pTcpEndpoint :: Endpoint,
