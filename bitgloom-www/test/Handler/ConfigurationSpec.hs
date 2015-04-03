@@ -9,14 +9,17 @@ spec = withApp $
         statusIs 200
 
         request $ do
-            setMethod "POST"
-            setUrl ConfigurationR
-            addToken
-            fileByLabel "Choose a file" "test/Spec.hs" "text/plain" -- talk about self-reference
-            byLabel "What's on the file?" "Some Content"
+          setMethod "POST"
+          setUrl ConfigurationR
+          addToken
+          byLabel "TCP endpoint" "127.0.0.1:7656"
+          byLabel "UDP endpoint" "127.0.0.1:7655"
+          byLabel "Endpoint" "127.0.0.1:18332"
+          byLabel "Username" "user"
+          byLabel "Password" "pass"
 
         statusIs 200
         -- more debugging printBody
-        htmlCount ".message" 1
-        htmlAllContain ".message" "Some Content"
-        htmlAllContain ".message" "text/plain"
+        -- htmlCount ".message" 1
+        -- htmlAllContain ".message" "Some Content"
+        -- htmlAllContain ".message" "text/plain"

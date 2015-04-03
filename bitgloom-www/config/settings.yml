@@ -17,7 +17,9 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # mutable-static: false
 # skip-combining: false
 
-state-dir:      "db/"
+database:
+  database: "_env:SQLITE_DATABASE:bitgloom.sqlite3"
+  poolsize: "_env:SQLITE_POOLSIZE:10"
 
 #copyright: Copyright 2015 Leon Mergen
 #analytics: UA-YOURCODE

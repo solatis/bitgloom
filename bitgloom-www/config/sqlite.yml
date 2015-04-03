@@ -1,0 +1,20 @@
+Default: &defaults
+  database: bitgloom.sqlite3
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: bitgloom_test.sqlite3
+  <<: *defaults
+
+Staging:
+  database: bitgloom_staging.sqlite3
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: bitgloom_production.sqlite3
+  poolsize: 100
+  <<: *defaults
