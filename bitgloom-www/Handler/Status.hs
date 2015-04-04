@@ -4,32 +4,33 @@ import Import
 import qualified Bitgloom.I2P as I2P
 import qualified Bitgloom.BTC as BTC
 import qualified Data.Text as T (unpack)
-import qualified Data.Text.Encoding as TE (encodeUtf8)
+
+import Model.Configuration (retrieve)
 
 getStatusR :: Handler Html
-getStatusR = undefined
---              do
---   master    <- getYesod
---   config    <- liftIO $ query (appConfiguration master) Config.QueryConfiguration
---   i2pStatus <- testI2P config
---   btcStatus <- testBTC config
+getStatusR = do
+   master    <- getYesod
+   config    <- runDB $ retrieve
 
---   let readyToServe = i2pStatus == I2P.Available && btcStatus == BTC.Available
+   i2pStatus <- testI2P config
+   btcStatus <- testBTC config
 
---   defaultLayout $ do
---     setTitle "Status"
---     $(widgetFile "status")
+   let readyToServe = i2pStatus == I2P.Available && btcStatus == BTC.Available
 
--- -- | Validates whether I2P is available
--- testI2P :: MonadIO m => Config.ConfigurationState -> m I2P.Availability
--- testI2P config =
---   I2P.isAvailable ((Config.host . Config.i2pTcpEndpoint) config) ((Config.port . Config.i2pTcpEndpoint) config)
+   defaultLayout $ do
+     setTitle "Status"
+     $(widgetFile "status")
 
--- -- | Validates hwether BTC is available
--- testBTC :: MonadIO m => Config.ConfigurationState -> m BTC.Availability
--- testBTC config =
---   BTC.isAvailable
---     ((Config.host            . Config.btcEndpoint) config)
---     ((Config.port            . Config.btcEndpoint)  config)
---     ((TE.encodeUtf8          . Config.btcUsername) config)
---     ((TE.encodeUtf8          . Config.btcPassword) config)
+-- | Validates whether I2P is available
+testI2P :: MonadIO m => Configuration -> m I2P.Availability
+testI2P config =
+  I2P.isAvailable ((T.unpack . configurationI2pTcpHost) config) (configurationI2pTcpPort config)
+
+-- | Validates hwether BTC is available
+testBTC :: MonadIO m => Configuration -> m BTC.Availability
+testBTC config =
+  BTC.isAvailable
+    ((T.unpack . configurationBtcHost) config)
+    (configurationBtcPort config)
+    (configurationBtcUsername config)
+    (configurationBtcPassword config)
