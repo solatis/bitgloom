@@ -1,2 +1,3 @@
 ./bitgloom-btc
 ./bitgloom-i2p
+./bitgloom-www
