@@ -1,0 +1,76 @@
+#{extra}
+<h3>I2P daemon
+<div class="row uniform 50%">
+  <div class="3u 12u(mobilep)">
+    <label for="i2pTcpHost">
+      TCP host
+
+  <div class="3u 12u(mobilep)">
+    ^{fvInput i2pTcpHostView}
+
+  <div class="3u 12u(mobilep)">
+    <label for="i2pTcpPort">
+      TCP port
+
+  <div class="3u 12u(mobilep)">
+    ^{fvInput i2pTcpPortView}
+
+<div class="row uniform 50%">
+  <div class="3u 12u(mobilep)">
+    <label for="i2pUdpHost">
+      UDP host
+
+  <div class="3u 12u(mobilep)">
+    ^{fvInput i2pUdpHostView}
+
+  <div class="3u 12u(mobilep)">
+    <label for="i2pUdpPort">
+      UDP port
+
+  <div class="3u 12u(mobilep)">
+    ^{fvInput i2pUdpPortView}
+
+<p>
+
+<h3>Bitcoin daemon
+<div class="row uniform 50%">
+  <div class="3u 12u(mobilep)">
+    <label for="btcHost">
+      Host
+
+  <div class="3u 12u(mobilep)">
+    ^{fvInput btcHostView}
+
+  <div class="3u 12u(mobilep)">
+    <label for="btcPort">
+      Port
+
+  <div class="3u 12u(mobilep)">
+    ^{fvInput btcPortView}
+
+<div class="row uniform 50%">
+  <div class="3u 12u(mobilep)">
+    <label for="btcUsername">
+      Username
+
+  <div class="3u 12u(mobilep)">
+    ^{fvInput btcUsernameView}
+
+<div class="row uniform 50%">
+  <div class="3u 12u(mobilep)">
+    <label for="btcPassword">
+      Password
+
+  <div class="3u 12u(mobilep)">
+    ^{fvInput btcPasswordView}
+
+
+<p>
+
+<div class="row uniform">
+  <div class="12u">
+    <ul class="actions">
+      <li>
+        <input type="submit" style="special" value="Update configuration">
+      <li>
+        <input type="reset" value="Reset" class="alt">
