@@ -1,5 +1,6 @@
 module Model.Configuration (store, retrieve) where
 
+import Control.Monad (void)
 import ClassyPrelude.Yesod
 
 import Model
@@ -12,7 +13,7 @@ store conf = do
 
   case list of
    [c] -> replace (entityKey c) conf
-   []  -> (insert $ conf) >> return ()
+   []  -> void (insert conf)
    _   -> error "Database corruption: more than one configuration entry in the Sqlite database!"
 
 retrieve :: (MonadIO m)
@@ -22,5 +23,5 @@ retrieve = do
 
   case list of
    [conf] -> return (entityVal conf)
-   []     -> (insert $ Configuration "127.0.0.1" 7656 "127.0.0.1" 7655 "127.0.0.1" 8332 "user" "pass") >> retrieve
+   []     -> insert Configuration "127.0.0.1" 7656 "127.0.0.1" 7655 "127.0.0.1" 8332 "user" "pass" >> retrieve
    _      -> error "Database corruption: more than one configuration entry in the Sqlite database!"

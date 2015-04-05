@@ -11,7 +11,7 @@ import Model.Configuration (retrieve)
 getStatusR :: Handler Html
 getStatusR = do
    master    <- getYesod
-   config    <- runDB $ retrieve
+   config    <- runDB retrieve
 
    i2pStatus <- testI2P config
    btcStatus <- testBTC config

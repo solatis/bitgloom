@@ -3,65 +3,36 @@ module Handler.Configuration where
 import Import hiding (update)
 
 import qualified Data.Text as T (pack, unpack, concat)
+import qualified Data.Text.Encoding as TE (decodeUtf8, encodeUtf8)
 
 import Data.Attoparsec.Text (char, decimal, skipSpace, endOfInput, parseOnly)
 
-getConfigurationR :: Handler Html
-getConfigurationR = undefined
--- getConfigurationR = do
---   master <- getYesod
---   config <- liftIO $ query (appConfiguration master) QueryConfiguration
+import Model.Configuration (retrieve, store)
 
---   defaultLayout $ do
---     setTitle "Configuration"
---     $(widgetFile "configuration")
+getConfigurationR :: Handler Html
+getConfigurationR = do
+  master <- getYesod
+  config <- runDB retrieve
+
+  defaultLayout $ do
+    setTitle "Configuration"
+    $(widgetFile "configuration")
 
 postConfigurationR :: Handler Html
-postConfigurationR = undefined
-  --                    do
-  -- master <- getYesod
+postConfigurationR = do
+  master <- getYesod
 
-  -- config <- runInputPost $ ConfigurationState
-  --           <$> ireq endpointField "i2pTcpEndpoint"
-  --           <*> ireq endpointField "i2pUdpEndpoint"
-  --           <*> ireq endpointField "btcEndpoint"
-  --           <*> ireq textField "btcUsername"
-  --           <*> ireq textField "btcPassword"
+  config <- runInputPost $ Configuration
+            <$> ireq textField "i2pTcpHost"
+            <*> ireq intField "i2pTcpPort"
+            <*> ireq textField "i2pUdpHost"
+            <*> ireq intField "i2pUdpPort"
+            <*> ireq textField "btcHost"
+            <*> ireq intField "btcPort"
+            <*> ireq textField "btcUsername"
+            <*> ireq textField "btcPassword"
 
-  -- $(logDebug) "Now updating Configuration acid-state"
+  runDB $ store config
 
-  -- liftIO $ update (appConfiguration master) (UpdateConfiguration config)
-
-  -- setMessage "Configuration has been stored"
-  -- redirect ConfigurationR
-
--- endpointField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Endpoint
--- endpointField =
---   Field
---     { fieldParse = parseHelper $ parseEndpoint
---     , fieldView = \theId name attrs val isReq -> toWidget [hamlet| <input id="#{theId}" name="#{name}" *{attrs} type="number" step=any :isReq:required="" value="#{showVal val}"> |]
---     , fieldEnctype = UrlEncoded
---     }
---   where showVal           = either id (pack . show)
---         parseEndpoint str =
---           case (parseOnly endpointParser str) of
---             Left _         -> Left (MsgInvalidEntry (T.concat [T.pack "Endpoint is not in an ip:port format: ", str]))
---             Right endpoint -> Right endpoint
-
---         endpointParser = do
---           skipSpace
-
---           ip1  <- decimal
---           _    <- char '.'
---           ip2  <- decimal
---           _    <- char '.'
---           ip3  <- decimal
---           _    <- char '.'
---           ip4  <- decimal
---           _    <- char ':'
-
---           port <- decimal
---           skipSpace
---           endOfInput
-
---           return $ Endpoint ((show ip1) ++ "." ++ (show ip2) ++ "." ++ (show ip3) ++ "." ++ (show ip4)) port
+  setMessage "Configuration has been stored"
+  redirect ConfigurationR
