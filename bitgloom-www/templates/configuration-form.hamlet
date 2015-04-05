@@ -2,14 +2,14 @@
 <h3>I2P daemon
 <div class="row uniform 50%">
   <div class="3u 12u(mobilep)">
-    <label for="i2pTcpHost">
+    <label for="#{fvId i2pTcpHostView}">
       TCP host
 
   <div class="3u 12u(mobilep)">
     ^{fvInput i2pTcpHostView}
 
   <div class="3u 12u(mobilep)">
-    <label for="i2pTcpPort">
+    <label for="#{fvId i2pTcpPortView}">
       TCP port
 
   <div class="3u 12u(mobilep)">
@@ -17,14 +17,14 @@
 
 <div class="row uniform 50%">
   <div class="3u 12u(mobilep)">
-    <label for="i2pUdpHost">
+    <label for="#{fvId i2pUdpHostView}">
       UDP host
 
   <div class="3u 12u(mobilep)">
     ^{fvInput i2pUdpHostView}
 
   <div class="3u 12u(mobilep)">
-    <label for="i2pUdpPort">
+    <label for="#{fvId i2pUdpPortView}">
       UDP port
 
   <div class="3u 12u(mobilep)">
@@ -35,14 +35,14 @@
 <h3>Bitcoin daemon
 <div class="row uniform 50%">
   <div class="3u 12u(mobilep)">
-    <label for="btcHost">
+    <label for="#{fvId btcHostView}">
       Host
 
   <div class="3u 12u(mobilep)">
     ^{fvInput btcHostView}
 
   <div class="3u 12u(mobilep)">
-    <label for="btcPort">
+    <label for="#{fvId btcPortView}">
       Port
 
   <div class="3u 12u(mobilep)">
@@ -50,7 +50,7 @@
 
 <div class="row uniform 50%">
   <div class="3u 12u(mobilep)">
-    <label for="btcUsername">
+    <label for="#{fvId btcUsernameView}">
       Username
 
   <div class="3u 12u(mobilep)">
@@ -58,7 +58,7 @@
 
 <div class="row uniform 50%">
   <div class="3u 12u(mobilep)">
-    <label for="btcPassword">
+    <label for="#{fvId btcPasswordView}">
       Password
 
   <div class="3u 12u(mobilep)">

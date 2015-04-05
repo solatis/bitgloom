@@ -1,2 +1,2 @@
 database:
-  database: bitgloom_test
+  database: bitgloom_test.sqlite3
