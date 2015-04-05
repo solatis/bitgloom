@@ -5,7 +5,7 @@ import ClassyPrelude.Yesod
 
 import Model
 
-store :: (PersistQuery (PersistEntityBackend s), MonadIO m, PersistEntity s)
+store :: (PersistQuery (PersistEntityBackend s), MonadIO m, Functor m, PersistEntity s)
       => s
       -> ReaderT (PersistEntityBackend s) m ()
 store conf = do
@@ -23,5 +23,5 @@ retrieve = do
 
   case list of
    [conf] -> return (entityVal conf)
-   []     -> insert Configuration "127.0.0.1" 7656 "127.0.0.1" 7655 "127.0.0.1" 8332 "user" "pass" >> retrieve
+   []     -> insert (Configuration "127.0.0.1" 7656 "127.0.0.1" 7655 "127.0.0.1" 8332 "user" "pass") >> retrieve
    _      -> error "Database corruption: more than one configuration entry in the Sqlite database!"
