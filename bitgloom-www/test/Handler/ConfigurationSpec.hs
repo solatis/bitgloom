@@ -22,7 +22,7 @@ spec = withApp $
           byLabel "Password" "pass"
 
         statusIs 303
-        -- more debugging printBody
-        -- htmlCount ".message" 1
-        -- htmlAllContain ".message" "Some Content"
-        -- htmlAllContain ".message" "text/plain"
+        get ConfigurationR
+
+        htmlCount ".ok" 1
+        htmlAllContain ".ok" "Configuration has been stored"
