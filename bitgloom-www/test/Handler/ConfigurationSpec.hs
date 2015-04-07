@@ -4,7 +4,7 @@ import TestImport
 
 spec :: Spec
 spec = withApp $
-    it "submitting the form with working info is handled correctly" $ do
+    it "submitting the form is handled correctly" $ do
         get ConfigurationR
         statusIs 200
 
@@ -23,6 +23,11 @@ spec = withApp $
 
         statusIs 303
         get ConfigurationR
+        statusIs 200
 
         htmlCount ".ok" 1
         htmlAllContain ".ok" "Configuration has been stored"
+
+        get ConfigurationR
+        statusIs 200
+        htmlCount ".ok" 0
