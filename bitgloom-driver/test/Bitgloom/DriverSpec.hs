@@ -17,6 +17,8 @@ spec = do
   describe "when picking a role" $ do
     it "should be pick up both roles after 10 attempts" $
       let cprg pool       = cprgCreate pool :: SystemRNG
+
+          -- Generates infinite list of roles
           randomRoles gen =
             role : (randomRoles g')
 
