@@ -16,3 +16,9 @@ spec = do
       isAvailable "127.0.0.1" 18332  "nouser" "nopass" `shouldReturn` Unauthorized
     it "should return error when providing the wrong port" $
       isAvailable "127.0.0.1" 7656  "user" "pass" `shouldReturn` IncorrectPort
+
+  describe "when creating a session" $ do
+    it "can look up accounts" $ do
+      result <- withSession "127.0.0.1" 18332 "user" "pass" listAccounts
+      putStrLn ("result = " ++ show result)
+      length (result) `shouldBe` 1
