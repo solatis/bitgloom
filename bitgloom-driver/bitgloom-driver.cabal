@@ -11,7 +11,10 @@ library
   exposed-modules:     Bitgloom.Driver
 
   build-depends:       base                     >= 4.3          && < 5
+                     , crypto-random
+                     , crypto-numbers
 
+                     
                      , bitgloom-btc
                      , bitgloom-i2p
 
@@ -29,6 +32,9 @@ test-suite test-suite
 
   build-depends:       base                     >= 4.3          && < 5
                      , hspec
+                     , hspec-expectations
                      , network
                      
+                     , crypto-random
+
                      , bitgloom-driver
