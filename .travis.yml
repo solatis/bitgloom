@@ -73,6 +73,7 @@ install:
 
 script:
  - hlint bitgloom-btc/src --ignore="Parse error"
+ - hlint bitgloom-driver/src --ignore="Parse error"
  - hlint bitgloom-i2p/src --ignore="Parse error"
  - hlint bitgloom-www --ignore="Parse error" --ignore="Reduce duplication"
 
