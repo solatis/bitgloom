@@ -1,0 +1,34 @@
+name:              bitgloom-driver
+version:           0.0.1
+cabal-version:     >= 1.10
+build-type:        Simple
+
+library
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  ghc-options:         -Wall -ferror-spans -auto-all -caf-all
+
+  exposed-modules:     Bitgloom.Driver
+
+  build-depends:       base                     >= 4.3          && < 5
+
+                     , bitgloom-btc
+                     , bitgloom-i2p
+
+
+test-suite test-suite
+  type:                exitcode-stdio-1.0
+  ghc-options:         -Wall -ferror-spans -threaded -auto-all -caf-all -fno-warn-type-defaults
+  default-language:    Haskell2010
+  hs-source-dirs:      test
+  main-is:             Main.hs
+
+  other-modules:       Bitgloom.DriverSpec
+                       Spec
+                       Main
+
+  build-depends:       base                     >= 4.3          && < 5
+                     , hspec
+                     , network
+                     
+                     , bitgloom-driver
