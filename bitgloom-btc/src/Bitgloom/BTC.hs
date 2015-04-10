@@ -101,15 +101,15 @@ broadcast client to satoshi message =
         V.sum (V.map Btc.unspentAmount utxs)
 
       changeBtc utxs =
-        (unspentBtc utxs) - satoshi
+        unspentBtc utxs - satoshi
 
       transaction utxs =
-        Btc.decodeRawTransaction client =<< Btc.createRawTransaction client utxs (V.singleton (to, (changeBtc utxs)))
+        Btc.decodeRawTransaction client =<< Btc.createRawTransaction client utxs (V.singleton (to, changeBtc utxs))
 
       sign utxs tx =
         Btc.signRawTransaction client (Btc.decRaw tx) (Just utxs) Nothing Nothing
 
-      send tx = do
+      send tx =
         Btc.sendRawTransaction client (Btc.rawSigned tx)
 
   in liftIO $ do
