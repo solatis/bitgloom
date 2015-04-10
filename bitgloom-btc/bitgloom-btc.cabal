@@ -13,9 +13,14 @@ library
   build-depends:       base                     >= 4.3          && < 5
 
                      , transformers
-                     , unordered-containers
                      , exceptions
+                     
                      , bytestring
+                     , text                     
+                     , groom 
+                     
+                     , unordered-containers
+                     , vector
 
                      , http-client
                      , http-types
@@ -36,6 +41,9 @@ test-suite test-suite
   build-depends:       base                     >= 4.3          && < 5
                      , hspec
                      , hspec-expectations
+
+                     , bytestring
+                     , text
 
                      , network
                      , bitgloom-btc

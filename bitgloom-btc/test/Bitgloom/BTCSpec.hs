@@ -2,6 +2,9 @@
 
 module Bitgloom.BTCSpec where
 
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as TE
+
 import Bitgloom.BTC
 import Test.Hspec
 
@@ -20,5 +23,17 @@ spec = do
   describe "when creating a session" $ do
     it "can look up accounts" $ do
       result <- withSession "127.0.0.1" 18332 "user" "pass" listAccounts
-      putStrLn ("result = " ++ show result)
-      length (result) `shouldBe` 1
+      length (result) `shouldSatisfy` (> 0)
+      length (result) `shouldSatisfy` (<= 2)
+
+    it "can create a new address" $ do
+      address <- withSession "127.0.0.1" 18332 "user" "pass" createAddress
+
+      T.length address `shouldSatisfy` (>= 27)
+      T.length address `shouldSatisfy` (<= 34)
+
+    it "can broadcast a message to an address" $ do
+      withSession "127.0.0.1" 18332 "user" "pass" $ \client -> do
+        address <- createAddress client
+        broadcast client address 0.0001 (TE.encodeUtf8 (T.pack "hello world"))
+        True `shouldBe` True
