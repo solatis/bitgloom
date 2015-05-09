@@ -27,7 +27,6 @@ spec = do
     it "can look up accounts" $ do
       result <- Btc.withClient "127.0.0.1" 18332 "user" "pass" listAccounts
       length (result) `shouldSatisfy` (> 0)
-      length (result) `shouldSatisfy` (<= 2)
 
     it "can create a new address" $ do
       address <- Btc.withClient "127.0.0.1" 18332 "user" "pass" createAddress
