@@ -4,7 +4,6 @@ import Import
 import qualified Bitgloom.I2P as I2P
 import qualified Bitgloom.BTC as BTC
 import qualified Data.Text as T (unpack)
-import qualified Data.Text.Encoding as TE (encodeUtf8)
 
 import Model.Configuration (retrieve)
 
@@ -33,5 +32,5 @@ testBTC config =
   BTC.isAvailable
     ((T.unpack . configurationBtcHost) config)
     (configurationBtcPort config)
-    ((TE.encodeUtf8 . configurationBtcUsername) config)
-    ((TE.encodeUtf8 . configurationBtcPassword) config)
+    (configurationBtcUsername config)
+    (configurationBtcPassword config)
