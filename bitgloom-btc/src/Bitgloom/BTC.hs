@@ -82,8 +82,8 @@ broadcast :: MonadIO m
           -> BS.ByteString       -- ^ The message to send
           -> m Btc.TransactionId -- ^ The transaction that was sent to the network
 broadcast client to satoshi message =
-  let unspentBtc utxs =
-        foldr (+) 0 $ map (^. amount) utxs
+  let unspentBtc =
+        foldr ((+) . (^. amount)) 0
 
       changeBtc utxs =
         unspentBtc utxs - satoshi
