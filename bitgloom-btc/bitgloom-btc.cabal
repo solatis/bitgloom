@@ -18,7 +18,6 @@ library
                      , bytestring
                      , binary
                      , text                     
-                     , groom 
                      
                      , unordered-containers
                      , vector

@@ -7,6 +7,7 @@ import qualified Data.Text.Encoding as TE
 import qualified Data.Base58String as B58S (toText)
 
 import qualified Network.Bitcoin.Api.Client                   as Btc
+import qualified Network.Bitcoin.Api.Mining                   as Btc
 
 import Bitgloom.BTC
 import Test.Hspec
@@ -36,5 +37,7 @@ spec = do
 
     it "can broadcast a message to an address" $ do
       Btc.withClient "127.0.0.1" 18332 "user" "pass" $ \client -> do
+        -- Let's flush any transactions so we know for sure we have money to spend
+        _ <- Btc.generate client 10
         _ <- broadcast client 0.0001 (TE.encodeUtf8 (T.pack "hello world"))
         True `shouldBe` True

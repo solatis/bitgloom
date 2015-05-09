@@ -9,15 +9,12 @@ import           Control.Lens                                 ((^.))
 import           Control.Concurrent                           (forkIO,
                                                                killThread)
 import           Control.Concurrent.MVar
+import           Control.Monad                                (unless)
 import           Control.Monad.Catch                          (handle)
-import           Control.Monad (unless)
 import           Control.Monad.IO.Class
 
-import           Text.Groom                                   (groom)
-
 import qualified Data.ByteString                              as BS
-import qualified Data.Text                                    as T (Text,
-                                                                    pack)
+import qualified Data.Text                                    as T (Text, pack)
 
 import           Network.HTTP.Client                          (HttpException (..))
 
@@ -26,8 +23,8 @@ import qualified Data.Bitcoin.Types                           as Btc
 import qualified Network.Bitcoin.Api.Client                   as Btc
 import qualified Network.Bitcoin.Api.Misc                     as Btc
 import qualified Network.Bitcoin.Api.Transaction              as Btc
-import qualified Network.Bitcoin.Api.Wallet                   as Btc
 import           Network.Bitcoin.Api.Types.UnspentTransaction (amount)
+import qualified Network.Bitcoin.Api.Wallet                   as Btc
 
 data Availability =
   Available |
@@ -84,19 +81,23 @@ broadcast :: MonadIO m
           -> Btc.Btc             -- ^ The fee we wish to pay to miners
           -> BS.ByteString       -- ^ The message to send
           -> m Btc.TransactionId -- ^ The transaction that was sent to the network
-broadcast client satoshi message =
+broadcast client fee message =
   let unspentBtc =
         foldr ((+) . (^. amount)) 0
 
       changeBtc utxs =
-        unspentBtc utxs - satoshi
+        unspentBtc utxs - fee
 
   in liftIO $ do
     utxs <- liftIO $ Btc.listUnspent client
+
+    unless (unspentBtc utxs > fee)
+      (ioError (userError "Not enough money to pay fee"))
+
     to   <- liftIO $ Btc.newChangeAddress client
     tx   <- liftIO $ Btc.create client utxs [(to, changeBtc utxs)]
 
-    putStrLn ("decoded = " ++ groom tx)
+    putStrLn ("decoded = " ++ show tx)
 
     (tx', completed)  <- liftIO $ Btc.sign client tx (Just utxs) Nothing
 
