@@ -10,6 +10,7 @@ import           Control.Concurrent                           (forkIO,
                                                                killThread)
 import           Control.Concurrent.MVar
 import           Control.Monad.Catch                          (handle)
+import           Control.Monad (unless)
 import           Control.Monad.IO.Class
 
 import           Text.Groom                                   (groom)
@@ -72,34 +73,33 @@ createAddress :: MonadIO m
 createAddress client =
   liftIO $ Btc.newAddressWith client (T.pack "bitgloom")
 
--- | Broadcasts a message on the blockchain in a transaction. In order to do
---   this, we will send a small amount of money to another address and include
---   a script that includes this message.
+-- | Broadcasts a message on the blockchain in a transaction. In our case, the
+--   fee paid to broadcast a message should be configurable: it is a very important
+--   aspect of the sybill resistance of Bitgloom.
+--
+--   A change address wil automatically be created where all the money except
+--   the fee will be stored.
 broadcast :: MonadIO m
           => Btc.Client          -- ^ Our client session
-          -> Btc.Address         -- ^ Our change address
           -> Btc.Btc             -- ^ The fee we wish to pay to miners
           -> BS.ByteString       -- ^ The message to send
           -> m Btc.TransactionId -- ^ The transaction that was sent to the network
-broadcast client to satoshi message =
+broadcast client satoshi message =
   let unspentBtc =
         foldr ((+) . (^. amount)) 0
 
       changeBtc utxs =
         unspentBtc utxs - satoshi
 
-      transaction utxs =
-        Btc.create client utxs [(to, changeBtc utxs)]
-
-      sign utxs tx =
-        Btc.sign client tx (Just utxs) Nothing
-
   in liftIO $ do
     utxs <- liftIO $ Btc.listUnspent client
-    tx   <- liftIO $ transaction utxs
+    to   <- liftIO $ Btc.newChangeAddress client
+    tx   <- liftIO $ Btc.create client utxs [(to, changeBtc utxs)]
 
     putStrLn ("decoded = " ++ groom tx)
 
-    (tx', completed)  <- liftIO $ sign utxs tx
+    (tx', completed)  <- liftIO $ Btc.sign client tx (Just utxs) Nothing
+
+    unless completed (error "Internal error: unable to sign transaction!")
 
     Btc.send client tx'

@@ -36,6 +36,5 @@ spec = do
 
     it "can broadcast a message to an address" $ do
       Btc.withClient "127.0.0.1" 18332 "user" "pass" $ \client -> do
-        address <- createAddress client
-        _ <- broadcast client address 0.0001 (TE.encodeUtf8 (T.pack "hello world"))
+        _ <- broadcast client 0.0001 (TE.encodeUtf8 (T.pack "hello world"))
         True `shouldBe` True
