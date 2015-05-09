@@ -1,27 +1,32 @@
 module Bitgloom.BTC ( Availability (..)
                     , isAvailable
-                    , withSession
                     , listAccounts
                     , createAddress
                     , broadcast) where
 
-import Control.Monad.IO.Class
-import Control.Concurrent (forkIO, killThread)
-import Control.Concurrent.MVar
-import Control.Monad.Catch (handle)
+import           Control.Lens                                 ((^.))
 
-import Text.Groom (groom)
+import           Control.Concurrent                           (forkIO,
+                                                               killThread)
+import           Control.Concurrent.MVar
+import           Control.Monad.Catch                          (handle)
+import           Control.Monad.IO.Class
 
-import qualified Data.Text as T (pack)
-import Data.Fixed (resolution)
-import qualified Data.Vector as V
-import qualified Data.ByteString as BS
-import qualified Data.HashMap.Strict as HM
+import           Text.Groom                                   (groom)
 
-import Network.HTTP.Client (HttpException (..))
-import Network.HTTP.Types (Status)
+import qualified Data.ByteString                              as BS
+import qualified Data.Text                                    as T (Text,
+                                                                    pack)
 
-import qualified Network.Bitcoin as Btc
+import           Network.HTTP.Client                          (HttpException (..))
+
+import qualified Data.Bitcoin.Transaction                     as Btc ()
+import qualified Data.Bitcoin.Types                           as Btc
+import qualified Network.Bitcoin.Api.Client                   as Btc
+import qualified Network.Bitcoin.Api.Misc                     as Btc
+import qualified Network.Bitcoin.Api.Transaction              as Btc
+import qualified Network.Bitcoin.Api.Wallet                   as Btc
+import           Network.Bitcoin.Api.Types.UnspentTransaction (amount)
 
 data Availability =
   Available |
@@ -30,14 +35,10 @@ data Availability =
   Unauthorized
   deriving (Show, Eq)
 
-buildClientUri :: String -> Int -> String
-buildClientUri host port = "http://" ++ host ++ ":" ++ show port
-
-isAvailable :: MonadIO m => String -> Int -> BS.ByteString -> BS.ByteString -> m Availability
+isAvailable :: MonadIO m => String -> Int -> T.Text -> T.Text -> m Availability
 isAvailable host port user pass =
   let performTest errMsg = do
-        client <- Btc.getClient (buildClientUri host port) user pass
-        _      <- Btc.getBitcoindInfo client
+        _ <- Btc.withClient host port user pass Btc.getInfo
         putMVar errMsg Available
 
       handleExceptions errMsg (FailedConnectionException2 {}) = putMVar errMsg ConnectionRefused
@@ -57,24 +58,11 @@ isAvailable host port user pass =
 
     return res
 
-withSession :: MonadIO m
-            => String              -- ^ Hostname
-            -> Int                 -- ^ Port
-            -> BS.ByteString       -- ^ Username
-            -> BS.ByteString       -- ^ Password
-            -> (Btc.Client -> m a) -- ^ Computation to run
-            -> m a                 -- ^ Our Btc client session
-withSession host port user pass callback = do
-  client <- liftIO $ Btc.getClient (buildClientUri host port) user pass
-  callback client
-
 listAccounts :: MonadIO m
              => Btc.Client                 -- ^ Our client session
-             -> m [(Btc.Account, Btc.BTC)] -- ^ A list with all accounts and their associated BTC
-listAccounts client = liftIO $ do
-  accounts <- Btc.listAccounts client (Just 1)
-
-  return (HM.toList accounts)
+             -> m [(Btc.Account, Btc.Btc)] -- ^ A list with all accounts and their associated BTC
+listAccounts client = liftIO $
+  Btc.listAccounts client
 
 
 -- | Creates new bitcoin receiving address associated with an account
@@ -82,7 +70,7 @@ createAddress :: MonadIO m
               => Btc.Client
               -> m Btc.Address
 createAddress client =
-  liftIO $ Btc.getNewAddress client (Just (T.pack "bitgloom"))
+  liftIO $ Btc.newAddressWith client (T.pack "bitgloom")
 
 -- | Broadcasts a message on the blockchain in a transaction. In order to do
 --   this, we will send a small amount of money to another address and include
@@ -90,32 +78,28 @@ createAddress client =
 broadcast :: MonadIO m
           => Btc.Client          -- ^ Our client session
           -> Btc.Address         -- ^ Our change address
-          -> Btc.BTC             -- ^ The fee we wish to pay to miners
+          -> Btc.Btc             -- ^ The fee we wish to pay to miners
           -> BS.ByteString       -- ^ The message to send
-          -> m Btc.TransactionID -- ^ The id of the transaction that was sent to the network
+          -> m Btc.TransactionId -- ^ The transaction that was sent to the network
 broadcast client to satoshi message =
-  let unspentTransactions =
-        Btc.listUnspent client Nothing Nothing V.empty
-
-      unspentBtc utxs =
-        V.sum (V.map Btc.unspentAmount utxs)
+  let unspentBtc utxs =
+        foldr (+) 0 $ map (^. amount) utxs
 
       changeBtc utxs =
         unspentBtc utxs - satoshi
 
       transaction utxs =
-        Btc.decodeRawTransaction client =<< Btc.createRawTransaction client utxs (V.singleton (to, changeBtc utxs))
+        Btc.create client utxs [(to, changeBtc utxs)]
 
       sign utxs tx =
-        Btc.signRawTransaction client (Btc.decRaw tx) (Just utxs) Nothing Nothing
-
-      send tx =
-        Btc.sendRawTransaction client (Btc.rawSigned tx)
+        Btc.sign client tx (Just utxs) Nothing
 
   in liftIO $ do
-    utxs <- unspentTransactions
-
+    utxs <- liftIO $ Btc.listUnspent client
     tx   <- liftIO $ transaction utxs
-    tx'  <- liftIO $ sign utxs tx
 
-    send tx'
+    putStrLn ("decoded = " ++ groom tx)
+
+    (tx', completed)  <- liftIO $ sign utxs tx
+
+    Btc.send client tx'

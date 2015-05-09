@@ -16,15 +16,21 @@ library
                      , exceptions
                      
                      , bytestring
+                     , binary
                      , text                     
                      , groom 
                      
                      , unordered-containers
                      , vector
+                     , lens
 
                      , http-client
                      , http-types
-                     , network-bitcoin
+
+                     , bitcoin-types
+                     , bitcoin-tx
+                     , bitcoin-api
+                     , bitcoin-api-extra
 
 
 test-suite test-suite
@@ -42,8 +48,10 @@ test-suite test-suite
                      , hspec
                      , hspec-expectations
 
+                     , base58string
                      , bytestring
                      , text
 
                      , network
+                     , bitcoin-api
                      , bitgloom-btc
