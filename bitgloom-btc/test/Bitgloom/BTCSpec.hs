@@ -29,17 +29,17 @@ spec = do
       isAvailable "127.0.0.1" 7656  "user" "pass" `shouldReturn` IncorrectPort
 
   describe "when testing service" $ do
-    it "can broadcast a message to an address" $ do
+    it "can advertise a message on the blockchain" $ do
       Btc.withClient "127.0.0.1" 18332 "user" "pass" $ \client -> do
+
         -- Let's flush any transactions so we know for sure we have money to spend
         _   <- Btc.generate client 1
-        txid <- broadcast client 0.0001 message
+        txid <- advertise client 0.0001 message
         putStrLn ("txid = " ++ show txid)
         True `shouldBe` True
 
         where
-          header = HS.toBytes $ HS.hexString "b76a"
-
-          message = header <> onionAddress
-
+          header       = HS.toBytes $ HS.hexString "b76a"
           onionAddress = B32S.toBytes $ B32S.fromText "6MQF77PTMIV3BL6S"
+
+          message      = header <> onionAddress

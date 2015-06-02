@@ -1,6 +1,7 @@
 module Bitgloom.BTC ( Availability (..)
                     , isAvailable
-                    , broadcast) where
+                    , advertise
+                    , discover ) where
 
 import           Control.Lens                                 ((^.), (&), (<>~))
 
@@ -61,13 +62,13 @@ isAvailable host port user pass =
 --
 --   A change address wil automatically be created where all the money except
 --   the fee will be stored.
-broadcast :: MonadIO m
+advertise :: MonadIO m
           => Btc.Client          -- ^ Our client session
           -> Btc.Btc             -- ^ The fee we wish to pay to miners
           -> BS.ByteString       -- ^ The message to send, might be spread over
                                  --   multiple lines.
           -> m Btc.TransactionId -- ^ The transaction that was sent to the network
-broadcast client fee message =
+advertise client fee message =
   let unspentBtc =
         foldr ((+) . (^. amount)) 0
 
@@ -100,3 +101,8 @@ broadcast client fee message =
     unless completed (error "Internal error: unable to sign transaction!")
 
     Btc.send client tx'
+
+discover :: MonadIO m
+         => Btc.Client    -- ^ Our client session
+         -> BS.ByteString -- ^ Header that we are looking for
+         -> m ()          -- ^ Conduit source which only contains only matching Transactions
