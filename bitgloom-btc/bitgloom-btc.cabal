@@ -17,7 +17,8 @@ library
                      
                      , bytestring
                      , binary
-                     , text                     
+                     , text
+                     , groom                   
                      
                      , unordered-containers
                      , vector
@@ -28,6 +29,7 @@ library
 
                      , bitcoin-types
                      , bitcoin-tx
+                     , bitcoin-script
                      , bitcoin-api
                      , bitcoin-api-extra
 
@@ -47,9 +49,10 @@ test-suite test-suite
                      , hspec
                      , hspec-expectations
 
-                     , base58string
+                     , base32string
                      , bytestring
                      , text
+                     , hexstring
 
                      , network
                      , bitcoin-api
