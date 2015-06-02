@@ -7,6 +7,7 @@ import qualified Data.ByteString.Char8      as BS8
 import qualified Data.Text                  as T
 import qualified Data.Text.Encoding         as TE
 import qualified Data.HexString             as HS
+import Data.Monoid ((<>))
 
 import qualified Network.Bitcoin.Api.Client as Btc
 import qualified Network.Bitcoin.Api.Mining as Btc
@@ -39,6 +40,6 @@ spec = do
         where
           header = HS.toBytes $ HS.hexString "b76a"
 
-          message = header `BS8.append` onionAddress
+          message = header <> onionAddress
 
           onionAddress = B32S.toBytes $ B32S.fromText "6MQF77PTMIV3BL6S"
