@@ -1,10 +1,8 @@
 module Bitgloom.BTC ( Availability (..)
                     , isAvailable
-                    , listAccounts
-                    , createAddress
                     , broadcast) where
 
-import           Control.Lens                                 ((^.))
+import           Control.Lens                                 ((^.), (&), (<>~))
 
 import           Control.Concurrent                           (forkIO,
                                                                killThread)
@@ -14,12 +12,13 @@ import           Control.Monad.Catch                          (handle)
 import           Control.Monad.IO.Class
 
 import qualified Data.ByteString                              as BS
-import qualified Data.Text                                    as T (Text, pack)
+import qualified Data.Text                                    as T (Text)
 
 import           Network.HTTP.Client                          (HttpException (..))
 
-import qualified Data.Bitcoin.Transaction                     as Btc ()
+import qualified Data.Bitcoin.Transaction                     as Btc
 import qualified Data.Bitcoin.Types                           as Btc
+import qualified Data.Bitcoin.Script                          as Btc
 import qualified Network.Bitcoin.Api.Client                   as Btc
 import qualified Network.Bitcoin.Api.Misc                     as Btc
 import qualified Network.Bitcoin.Api.Transaction              as Btc
@@ -56,20 +55,6 @@ isAvailable host port user pass =
 
     return res
 
-listAccounts :: MonadIO m
-             => Btc.Client                 -- ^ Our client session
-             -> m [(Btc.Account, Btc.Btc)] -- ^ A list with all accounts and their associated BTC
-listAccounts client = liftIO $
-  Btc.listAccounts client
-
-
--- | Creates new bitcoin receiving address associated with an account
-createAddress :: MonadIO m
-              => Btc.Client
-              -> m Btc.Address
-createAddress client =
-  liftIO $ Btc.newAddressWith client (T.pack "bitgloom")
-
 -- | Broadcasts a message on the blockchain in a transaction. In our case, the
 --   fee paid to broadcast a message should be configurable: it is a very important
 --   aspect of the sybill resistance of Bitgloom.
@@ -79,7 +64,8 @@ createAddress client =
 broadcast :: MonadIO m
           => Btc.Client          -- ^ Our client session
           -> Btc.Btc             -- ^ The fee we wish to pay to miners
-          -> BS.ByteString       -- ^ The message to send
+          -> BS.ByteString       -- ^ The message to send, might be spread over
+                                 --   multiple lines.
           -> m Btc.TransactionId -- ^ The transaction that was sent to the network
 broadcast client fee message =
   let unspentBtc =
@@ -88,18 +74,28 @@ broadcast client fee message =
       changeBtc utxs =
         unspentBtc utxs - fee
 
+      -- This manpulates the transaction by adding an output script
+      -- that broadcasts the message.
+      addBroadcast :: Btc.Transaction -> Btc.Transaction
+      addBroadcast tx =
+        tx & Btc.txOut <>~ outTxs
+
+        where
+          outTxs               = [scriptify message]
+          scriptify msg        = Btc.TransactionOut 0 (Btc.Script [Btc.OP_RETURN, Btc.OP_PUSHDATA msg Btc.OPCODE])
+
   in liftIO $ do
-    utxs <- liftIO $ Btc.listUnspent client
+    utxs <- Btc.listUnspent client
 
     unless (unspentBtc utxs > fee)
       (ioError (userError "Not enough money to pay fee"))
 
-    to   <- liftIO $ Btc.newChangeAddress client
-    tx   <- liftIO $ Btc.create client utxs [(to, changeBtc utxs)]
+    to   <- Btc.newChangeAddress client
+    raw  <- Btc.create client utxs [(to, changeBtc utxs)]
 
-    putStrLn ("decoded = " ++ show tx)
+    let tx = addBroadcast raw
 
-    (tx', completed)  <- liftIO $ Btc.sign client tx (Just utxs) Nothing
+    (tx', completed)  <- Btc.sign client tx (Just utxs) Nothing
 
     unless completed (error "Internal error: unable to sign transaction!")
 
