@@ -106,3 +106,4 @@ discover :: MonadIO m
          => Btc.Client    -- ^ Our client session
          -> BS.ByteString -- ^ Header that we are looking for
          -> m ()          -- ^ Conduit source which only contains only matching Transactions
+discover = undefined
