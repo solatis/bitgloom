@@ -12,12 +12,7 @@ library
 
   build-depends:       base                     >= 4.3          && < 5
                      , crypto-random
-                     , crypto-numbers
-
-                     
-                     , bitgloom-btc
-                     , bitgloom-i2p
-
+                     , crypto-numbers                     
 
 test-suite test-suite
   type:                exitcode-stdio-1.0
