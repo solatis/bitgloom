@@ -1,16 +1,21 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Bitgloom.I2PSpec where
+module Bitgloom.TorSpec where
 
-import Bitgloom.I2P
+import Bitgloom.Tor
 import Test.Hspec
 
 spec :: Spec
 spec = do
   describe "when testing service availability" $ do
-    it "should work when providing SAM host/port" $
-      isAvailable "127.0.0.1" 7656 `shouldReturn` Available
-    it "should return error when providing non-existing port" $
-      isAvailable "127.0.0.1" 1234 `shouldReturn` ConnectionRefused
-    it "should return error when providing invalid port" $
-      isAvailable "127.0.0.1" 7657 `shouldReturn` IncorrectPort
+    it "should work when providing valid Tor control ports" $ do
+      ports <- detectPort [9051, 9151]
+      length (ports) `shouldBe` 1
+
+    it "should return error when providing invalid port" $ do
+      ports <- detectPort [9050]
+      length (ports) `shouldBe` 0
+
+    it "should return error when providing unavailable port" $ do
+      ports <- detectPort [1234]
+      length (ports) `shouldBe` 0

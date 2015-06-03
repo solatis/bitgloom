@@ -8,7 +8,7 @@ library
   default-language:    Haskell2010
   ghc-options:         -Wall -ferror-spans -auto-all -caf-all
 
-  exposed-modules:     Bitgloom.TOR
+  exposed-modules:     Bitgloom.Tor
 
   build-depends:       base                     >= 4.3          && < 5
 
