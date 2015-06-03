@@ -19,8 +19,6 @@ library
                      , binary
                      , text
                      
-                     , unordered-containers
-                     , vector
                      , lens
 
                      , http-client
