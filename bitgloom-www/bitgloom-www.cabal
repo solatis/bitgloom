@@ -86,8 +86,7 @@ library
                  , time
                  , attoparsec
 
-                 , network-anonymous-i2p
-                 , bitgloom-i2p
+                 , bitgloom-tor
                  , bitgloom-btc
 
 executable         bitgloom-www

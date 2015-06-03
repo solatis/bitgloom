@@ -1,34 +1,12 @@
 #{extra}
-<h3>I2P daemon
+<h3>Tor daemon
 <div class="row uniform 50%">
   <div class="3u 12u(mobilep)">
-    <label for="#{fvId i2pTcpHostView}">
-      TCP host
+    <label for="#{fvId torPortView}">
+      Port
 
   <div class="3u 12u(mobilep)">
-    ^{fvInput i2pTcpHostView}
-
-  <div class="3u 12u(mobilep)">
-    <label for="#{fvId i2pTcpPortView}">
-      TCP port
-
-  <div class="3u 12u(mobilep)">
-    ^{fvInput i2pTcpPortView}
-
-<div class="row uniform 50%">
-  <div class="3u 12u(mobilep)">
-    <label for="#{fvId i2pUdpHostView}">
-      UDP host
-
-  <div class="3u 12u(mobilep)">
-    ^{fvInput i2pUdpHostView}
-
-  <div class="3u 12u(mobilep)">
-    <label for="#{fvId i2pUdpPortView}">
-      UDP port
-
-  <div class="3u 12u(mobilep)">
-    ^{fvInput i2pUdpPortView}
+    ^{fvInput torPortView}
 
 <p>
 

@@ -1,11 +1,8 @@
 Configuration
-    i2pTcpHost Text
-    i2pTcpPort Int
-    i2pUdpHost Text
-    i2pUdpPort Int
-
-    btcHost Text
-    btcPort Int
+    torPort     Int
+    
+    btcHost     Text
+    btcPort     Int
     btcUsername Text
     btcPassword Text
 

@@ -23,5 +23,5 @@ retrieve = do
 
   case list of
    [conf] -> return (entityVal conf)
-   []     -> insert (Configuration "127.0.0.1" 7656 "127.0.0.1" 7655 "127.0.0.1" 8332 "user" "pass") >> retrieve
+   []     -> insert (Configuration 9151 "127.0.0.1" 8332 "user" "pass") >> retrieve
    _      -> error "Database corruption: more than one configuration entry in the Sqlite database!"

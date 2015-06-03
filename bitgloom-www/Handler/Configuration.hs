@@ -37,19 +37,13 @@ postConfigurationR = do
 
 configurationForm :: Configuration -> Html -> MForm Handler (FormResult Configuration, Widget)
 configurationForm config extra = do
-  (i2pTcpHostRes, i2pTcpHostView)   <- mreq textField "TCP host" (Just (configurationI2pTcpHost config))
-  (i2pTcpPortRes, i2pTcpPortView)   <- mreq intField "TCP port" (Just (configurationI2pTcpPort config))
-  (i2pUdpHostRes, i2pUdpHostView)   <- mreq textField "UDP host" (Just (configurationI2pUdpHost config))
-  (i2pUdpPortRes, i2pUdpPortView)   <- mreq intField "UDP port" (Just (configurationI2pUdpPort config))
+  (torPortRes, torPortView)         <- mreq intField "Tor port" (Just (configurationTorPort config))
   (btcHostRes, btcHostView)         <- mreq textField "Host" (Just (configurationBtcHost config))
   (btcPortRes, btcPortView)         <- mreq intField "Port" (Just (configurationBtcPort config))
   (btcUsernameRes, btcUsernameView) <- mreq textField "Username" (Just (configurationBtcUsername config))
   (btcPasswordRes, btcPasswordView) <- mreq passwordField "Password" (Just (configurationBtcPassword config))
 
-  let configurationRes = Configuration <$> i2pTcpHostRes
-                                       <*> i2pTcpPortRes
-                                       <*> i2pUdpHostRes
-                                       <*> i2pUdpPortRes
+  let configurationRes = Configuration <$> torPortRes
                                        <*> btcHostRes
                                        <*> btcPortRes
                                        <*> btcUsernameRes
