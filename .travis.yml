@@ -48,16 +48,8 @@ before_install:
 # Installing cabal and ghc
  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER # see note about happy/alex
  - export PATH=$HOME/.cabal/bin:/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
- - travis_retry cabal update
- 
-# Happy/alex hack for ghc > 7.8.1
- - |
-   if [ $GHCVER = "head" ] || [ ${GHCVER%.*} = "7.8" ] || [ ${GHCVER%.*} = "7.10" ]; then
-     travis_retry sudo apt-get install happy-1.19.4 alex-3.1.3
-     export PATH=/opt/alex/3.1.3/bin:/opt/happy/1.19.4/bin:$PATH
-   else
-     travis_retry sudo apt-get install happy alex
-   fi
+ - travis_retry cabal update 
+ - travis_retry sudo cabal install happy alex
 
  - travis_retry sudo apt-get -q -y install hlint || cabal install hlint
  - cabal install cabal-meta
