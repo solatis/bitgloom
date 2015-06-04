@@ -49,7 +49,7 @@ before_install:
  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER # see note about happy/alex
  - export PATH=$HOME/.cabal/bin:/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
  - travis_retry cabal update 
- - travis_retry sudo cabal install happy alex
+ - travis_retry cabal install happy alex
 
  - travis_retry sudo apt-get -q -y install hlint || cabal install hlint
  - cabal install cabal-meta
