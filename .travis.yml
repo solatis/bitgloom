@@ -61,7 +61,7 @@ before_install:
 install:
  - cabal --version
  - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
- - travis_retry cabal-meta install --only-dependencies --enable-tests --enable-benchmarks --force-reinstalls
+ - travis_retry cabal-meta install -j --only-dependencies --enable-tests --enable-benchmarks --force-reinstalls
 
 script:
  - hlint bitgloom-btc/src --ignore="Parse error"
