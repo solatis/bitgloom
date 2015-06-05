@@ -119,20 +119,21 @@ discover :: Btc.Client                -- ^ Our client session
          -> C.Source IO BS.ByteString -- ^ Conduit which only contains only
                                       --   messages that are being advertised.
 discover client header =
-  let predicate = isJust   . maybeExtract
-      extract   = fromJust . maybeExtract
 
-      -- Extracts message from transaction in case the message starts with
-      -- 'header'. The header is stripped from the message that is returned.
-      maybeExtract :: Btc.Transaction -> Maybe BS.ByteString
-      maybeExtract (Btc.Transaction _ _ outputs _) = go outputs
-        where
-          go [] = Nothing
-          go (Btc.TransactionOut _ (Btc.Script [Btc.OP_RETURN, Btc.OP_PUSHDATA msg Btc.OPCODE]):xs) =
-            case BS.findSubstring header msg of
-             Just 0 -> Just (BS.drop (BS.length header) msg)
-             _      -> go xs
+  Btc.watch client Nothing $= CC.filter predicate $= CC.map extract
 
-          go (_:xs) = go xs
+  where
+    predicate = isJust   . maybeExtract
+    extract   = fromJust . maybeExtract
 
-  in Btc.watch client Nothing $= CC.filter predicate $= CC.map extract
+    -- Extracts message from transaction in case the message starts with
+    -- 'header'. The header is stripped from the message that is returned.
+    maybeExtract (Btc.Transaction _ _ outputs _) = go outputs
+      where
+        go [] = Nothing
+        go (Btc.TransactionOut _ (Btc.Script [Btc.OP_RETURN, Btc.OP_PUSHDATA msg Btc.OPCODE]):xs) =
+          case BS.findSubstring header msg of
+           Just 0 -> Just (BS.drop (BS.length header) msg)
+           _      -> go xs
+
+        go (_:xs) = go xs
