@@ -34,7 +34,7 @@ $newline never
           <li>
             <a href="@{StatusR}">Status
           <li>
-            <a href="anonymize.html">Anonymize
+            <a href="@{AnonymizeR}">Anonymize
           <li>
             <a href="@{ConfigurationR}">Configuration
           <li>
