@@ -6,7 +6,7 @@ import qualified Bitgloom.BTC as BTC
 import Model.Configuration (retrieve)
 
 getAnonymizeR :: Handler Html
-getAnonymizeR = do
+getAnonymizeR =
    defaultLayout $ do
      setTitle "Anonymize"
      $(widgetFile "Anonymize")
