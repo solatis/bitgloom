@@ -20,6 +20,8 @@ library
                      , text
                      
                      , lens
+                     , conduit
+                     , conduit-combinators                     
 
                      , http-client
                      , http-types
@@ -46,6 +48,9 @@ test-suite test-suite
                      , hspec
                      , hspec-expectations
 
+                     , conduit
+                     , conduit-combinators                     
+                     
                      , base32string
                      , bytestring
                      , text
