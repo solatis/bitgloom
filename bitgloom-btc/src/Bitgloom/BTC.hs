@@ -128,11 +128,11 @@ discover client header =
       maybeExtract (Btc.Transaction _ _ outputs _) = go outputs
         where
           go [] = Nothing
-          go ((Btc.TransactionOut _ (Btc.Script [Btc.OP_RETURN, Btc.OP_PUSHDATA msg Btc.OPCODE])):xs) =
+          go (Btc.TransactionOut _ (Btc.Script [Btc.OP_RETURN, Btc.OP_PUSHDATA msg Btc.OPCODE]):xs) =
             case BS.findSubstring header msg of
-             Just 0 -> (Just (BS.drop (BS.length header) msg))
+             Just 0 -> Just (BS.drop (BS.length header) msg)
              _      -> go xs
 
           go (_:xs) = go xs
 
-  in (Btc.watch client Nothing) $= (CC.filter predicate) $= (CC.map extract)
+  in Btc.watch client Nothing $= CC.filter predicate $= CC.map extract
