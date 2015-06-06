@@ -9,4 +9,4 @@ getAnonymizeR :: Handler Html
 getAnonymizeR =
    defaultLayout $ do
      setTitle "Anonymize"
-     $(widgetFile "Anonymize")
+     $(widgetFile "anonymize")
