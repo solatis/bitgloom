@@ -12,7 +12,6 @@ import Model.Configuration (retrieve, store)
 
 getConfigurationR :: Handler Html
 getConfigurationR = do
-  master <- getYesod
   config <- runDB retrieve
 
   (formWidget, formEnctype) <- generateFormPost (configurationForm config)

@@ -31,6 +31,7 @@ import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
 -- Don't forget to add new modules to your cabal file!
 import Handler.Common
 import Handler.Anonymize
+import Handler.AnonymizeAccount
 import Handler.Status
 import Handler.Configuration
 

@@ -1,8 +1,9 @@
 /static StaticR Static appStatic
 
-/favicon.ico FaviconR GET
-/robots.txt RobotsR GET
+/favicon.ico     FaviconR GET
+/robots.txt      RobotsR GET
 
-/ StatusR GET
-/anonymize AnonymizeR GET
-/configuration ConfigurationR GET POST
+/                StatusR GET
+/anonymize       AnonymizeR GET
+/anonymize/#Text AnonymizeAccountR GET
+/configuration   ConfigurationR GET POST

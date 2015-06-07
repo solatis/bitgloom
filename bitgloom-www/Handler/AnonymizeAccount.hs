@@ -1,22 +1,21 @@
-module Handler.Anonymize ( getAnonymizeR ) where
+module Handler.AnonymizeAccount ( getAnonymizeAccountR ) where
 
 import Import
 import qualified Bitgloom.BTC as Btc
-import qualified Data.Text as T (unpack)
+import qualified Data.Text as T (Text, unpack)
 
 import Model.Configuration (retrieve)
 
-getAnonymizeR :: Handler Html
-getAnonymizeR = do
+getAnonymizeAccountR :: T.Text -> Handler Html
+getAnonymizeAccountR account = do
   config <- runDB retrieve
 
   accounts <- liftIO $ connectBtc config Btc.listAccounts
 
   defaultLayout $ do
-    setTitle "Anonymize"
-    $(widgetFile "anonymize")
+    setTitle "Anonymize Account"
+    $(widgetFile "anonymize-account")
 
--- | Validates hwether BTC is available
 connectBtc :: Configuration -> (Btc.Client -> IO a) -> IO a
 connectBtc config =
   Btc.withClient

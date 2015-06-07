@@ -23,6 +23,7 @@ library
                      Settings.StaticFiles
                      Handler.Common
                      Handler.Anonymize
+                     Handler.AnonymizeAccount
                      Handler.Status
                      Handler.Configuration
 

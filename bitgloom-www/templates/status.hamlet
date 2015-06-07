@@ -2,7 +2,7 @@
   <h2>Status
   <p>
     $if readyToServe
-      <a href="#" class="button special icon fa-check-circle">
+      <a href="@{AnonymizeR}" class="button special icon fa-check-circle">
         Ready to serve
 
 <div class="box">

@@ -1,0 +1,26 @@
+<header>
+  <h2>Anonymize account
+  <p>
+    $if null (account)
+      <i>Default
+    $else
+      #{account}
+
+<div class="box">
+  <div class="row uniform 50%">
+    <div class="3u 12u(mobilep)">
+      &nbsp;
+
+    <div class="6u 12u(mobilep)">
+      <p>
+        Please fill in the form below.
+
+    <div class="3u 12u(mobilep)">
+      &nbsp;
+
+  <div class="row uniform 50%">
+    &nbsp;
+
+  <div class="row uniform 50%">
+    <div class="3u 12u(mobilep)">
+      &nbsp;

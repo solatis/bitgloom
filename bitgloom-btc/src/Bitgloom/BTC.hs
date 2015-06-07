@@ -1,4 +1,7 @@
-module Bitgloom.BTC ( Availability (..)
+module Bitgloom.BTC ( Btc.Client
+                    , Btc.withClient
+                    , Btc.listAccounts
+                    , Availability (..)
                     , isAvailable
                     , advertise
                     , discover ) where

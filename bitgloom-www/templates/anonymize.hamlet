@@ -31,12 +31,16 @@
           <th>Bitcoins
 
         <tbody>
-          <tr>
-            <td>
-              <a href='#'>
-                <i>None
-            <td>
-              83.19 BTC
+          $forall account <- accounts
+            <tr>
+              <td>
+                <a href="@{AnonymizeAccountR (fst account)}">
+                  $if null (fst account)
+                    <i>Default
+                  $else
+                    #{fst account}
+              <td>
+                #{show (snd account)} BTC
 
     <div class="3u 12u(mobilep)">
       &nbsp;
