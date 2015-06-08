@@ -8,7 +8,10 @@ import Crypto.Random (  CPRG
                       , cprgCreate)
 
 import Data.List (nub)
+
 import Bitgloom.Driver
+import Bitgloom.Driver.Types
+
 import Test.Hspec
 import Test.Hspec.Expectations
 

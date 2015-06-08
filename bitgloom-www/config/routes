@@ -5,5 +5,5 @@
 
 /                StatusR GET
 /anonymize       AnonymizeR GET
-/anonymize/#Text AnonymizeAccountR GET
+/anonymize/#Text AnonymizeAccountR GET POST
 /configuration   ConfigurationR GET POST

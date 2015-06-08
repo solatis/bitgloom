@@ -1,6 +1,7 @@
 module Bitgloom.BTC ( Btc.Client
                     , Btc.withClient
                     , Btc.listAccounts
+                    , Btc.getAccountBalance
                     , Availability (..)
                     , isAvailable
                     , advertise

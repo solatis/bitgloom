@@ -9,10 +9,13 @@ library
   ghc-options:         -Wall -ferror-spans -auto-all -caf-all
 
   exposed-modules:     Bitgloom.Driver
+                       Bitgloom.Driver.Types
 
   build-depends:       base                     >= 4.3          && < 5
                      , crypto-random
-                     , crypto-numbers                     
+                     , crypto-numbers
+                     
+                     , bitcoin-types
 
 test-suite test-suite
   type:                exitcode-stdio-1.0
