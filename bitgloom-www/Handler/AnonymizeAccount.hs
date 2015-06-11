@@ -79,7 +79,5 @@ btcField = Field
 $newline never
 <input id="#{theId}" name="#{name}" *{attrs} type="number" step=any :isReq:required="" value="#{showVal val}">
 |]
-    showVal = either id (pack . show)
-
-    parse :: T.Text -> Either FormMessage BT.Btc
+    showVal   = either id (pack . show)
     parse str = first (MsgInvalidEntry . T.pack) $ readEither (T.unpack str)
