@@ -1,0 +1,33 @@
+(function($) {
+    var iterations       = $('#' + #{toJSON $ fvId iterationsView});
+    var amount           = $('#' + #{toJSON $ fvId amountView});
+    var percentage       = $('#' + #{toJSON $ fvId percentageView});
+
+    var btc_to_anonymize = $('#btc_to_anonymize');
+    var btc_fee          = $('#btc_fee');
+
+    var total_btc = function () {
+        return (parseInt (iterations.val ()) * parseFloat (amount.val ())).toFixed (7);
+    }
+
+    btc_to_anonymize.repaint = function () {
+        this.text (total_btc () + ' BTC');
+    }
+
+    btc_fee.repaint = function () {
+        var fee = ((total_btc () / 100) * parseFloat ($('option:selected', percentage).text ())).toFixed (7);
+
+        this.text (fee + ' BTC');
+    }
+
+    $.each ($('#anonymize-account-form :input'), function () {
+        $(this).change (function () {
+            btc_to_anonymize.repaint ();
+            btc_fee.repaint ();
+        });
+    });
+
+    btc_to_anonymize.repaint ();
+    btc_fee.repaint ();
+
+} (jQuery));

@@ -7,7 +7,7 @@
       #{accountId}
 
 <div class="box">
-  <form method=post action=@{AnonymizeAccountR accountId} enctype=#{formEnctype}>
+  <form method=post action=@{AnonymizeAccountR accountId} enctype=#{formEnctype} id="anonymize-account-form">
     ^{formWidget}
 
 <!-- <div class="box"> -->

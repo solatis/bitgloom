@@ -5,7 +5,7 @@
 
   <div class="3u 12u(mobilep)">
     <label for="#{fvId iterationsView}">
-      Amount of anonymization rounds:
+      Minimum amount of rounds:
 
   <div class="3u 12u(mobilep)">
     ^{fvInput iterationsView}
@@ -16,7 +16,7 @@
 
   <div class="3u 12u(mobilep)">
     <label for="#{fvId amountView}">
-      BTC per round
+      BTC to anonymize:
 
   <div class="3u 12u(mobilep)">
     ^{fvInput amountView}
@@ -54,7 +54,7 @@
 
   <div class="3u 12u(mobilep)">
     <b>
-      <span id='btc_to_anonymize'>10</span> BTC
+      <span id="btc_to_anonymize">10 BTC</span>
 
 <div class="row uniform 50%">
   <div class="3u 12u(mobilep)">
@@ -65,7 +65,7 @@
 
   <div class="3u 12u(mobilep)">
     <b>
-      <span id='btc_fee'>0.1</span> BTC
+      <span id="btc_fee">0.1 BTC</span>
 
 <p>
 

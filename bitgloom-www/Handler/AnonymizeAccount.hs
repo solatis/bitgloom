@@ -2,11 +2,16 @@ module Handler.AnonymizeAccount ( getAnonymizeAccountR
                                 , postAnonymizeAccountR ) where
 
 import Import
+
 import qualified Bitgloom.BTC as Btc
 import qualified Bitgloom.Driver.Types as Driver
+import qualified Data.Bitcoin.Types as BT
+import Data.Bifunctor (first)
 
-import qualified Data.Text as T (Text, unpack)
+import qualified Data.Text as T (Text, pack, unpack)
+import Text.Read (readEither)
 
+import Debug.Trace (trace)
 import Model.Configuration (retrieve)
 
 getAnonymizeAccountR :: T.Text -> Handler Html
@@ -20,7 +25,16 @@ getAnonymizeAccountR accountId = do
     $(widgetFile "anonymize-account")
 
 postAnonymizeAccountR :: T.Text -> Handler Html
-postAnonymizeAccountR accountId = undefined
+postAnonymizeAccountR accountId = do
+  $logDebug "I'm in postAnonymizeAccountR"
+
+  config <- runDB retrieve
+  ((result, widget), enctype) <- runFormPost (anonymizeForm config accountId)
+
+  $logDebug ("I'm in postAnonymizeAccountR, result = " <> (T.pack $ show result))
+
+  setMessage "Anonymization has started"
+  redirect (AnonymizeAccountR accountId)
 
 connectBtc :: Configuration -> (Btc.Client -> IO a) -> IO a
 connectBtc config =
@@ -34,8 +48,8 @@ anonymizeForm :: Configuration -> T.Text -> Html -> MForm Handler (FormResult Dr
 anonymizeForm config accountId extra = do
   balance <- liftIO $ getBalance config accountId
 
-  (iterationsRes, iterationsView) <- mreq intField "Amount of rounds" (Just 10)
-  (amountRes, amountView)         <- mreq (selectFieldList blockSizeTypes) "BTC per round" (Just Driver.BlockSize1)
+  (iterationsRes, iterationsView) <- mreq intField "Minimum amount of rounds" (Just 10)
+  (amountRes, amountView)         <- mreq btcField "BTC to anonymize" (Just balance)
   (percentageRes, percentageView) <- mreq (selectFieldList feeTypes) "Fee %" (Just Driver.Fee01)
 
   let anonymizeJob = Driver.Job <$> iterationsRes
@@ -53,5 +67,19 @@ anonymizeForm config accountId extra = do
     feeTypes :: [(Text, Driver.Fee)]
     feeTypes = map (pack . show &&& id) [minBound..maxBound]
 
-    blockSizeTypes :: [(Text, Driver.BlockSize)]
-    blockSizeTypes = map (pack . show &&& id) [minBound..maxBound]
+btcField :: (Monad m, RenderMessage (HandlerSite m) FormMessage) => Field m BT.Btc
+btcField = Field
+    { fieldParse   = parseHelper parse
+    , fieldView    = view
+    , fieldEnctype = UrlEncoded
+    }
+
+  where
+    view theId name attrs val isReq = toWidget [hamlet|
+$newline never
+<input id="#{theId}" name="#{name}" *{attrs} type="number" step=any :isReq:required="" value="#{showVal val}">
+|]
+    showVal = either id (pack . show)
+
+    parse :: T.Text -> Either FormMessage BT.Btc
+    parse str = first (MsgInvalidEntry . T.pack) $ readEither (T.unpack str)
