@@ -1,9 +1,25 @@
-module Model.Configuration (store, retrieve) where
+{-# LANGUAGE NoImplicitPrelude          #-}
+{-# LANGUAGE FlexibleContexts           #-}
+{-# LANGUAGE GADTs                      #-}
+{-# LANGUAGE OverloadedStrings          #-}
+{-# LANGUAGE QuasiQuotes                #-}
+{-# LANGUAGE TemplateHaskell            #-}
+{-# LANGUAGE TypeFamilies               #-}
+{-# LANGUAGE MultiParamTypeClasses      #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-import Control.Monad (void)
+module Bitgloom.Driver.Model.Configuration where
+
 import ClassyPrelude.Yesod
 
-import Model
+share [mkPersist sqlSettings, mkMigrate "migrateConfiguration"] [persistLowerCase|
+Configuration
+    torPort     Int
+    btcHost     Text
+    btcPort     Int
+    btcUsername Text
+    btcPassword Text
+|]
 
 store :: (PersistQuery (PersistEntityBackend s), MonadIO m, Functor m, PersistEntity s)
       => s

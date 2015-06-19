@@ -1,10 +1,18 @@
+{-# LANGUAGE TemplateHaskell            #-}
+
 module Bitgloom.Driver.Types where
 
 import qualified Data.Bitcoin.Types as BT
-import Data.Fixed (Centi)
 import Data.Word (Word8)
 
-data Role = Advertiser | Respondent deriving (Show, Eq, Bounded, Enum)
+import Database.Persist.TH
+
+data Role = Advertiser
+          | Respondent
+
+          deriving (Show, Read, Eq, Bounded, Enum)
+
+derivePersistField "Role"
 
 data Fee = Fee001 -- ^ 0.01 %
          | Fee01  -- ^ 0.1 %
@@ -17,8 +25,9 @@ instance Show Fee where
   show Fee01  = "0.1 %"
   show Fee1   = "1 %"
 
-data Job = Job {
-  iterations :: Word8,
-  amount :: BT.Btc,
-  fee :: Fee
-  } deriving (Show, Eq)
+instance Read Fee where
+  readsPrec _ "0.01 %" = [(Fee001, "")]
+  readsPrec _ "0.1 %" = [(Fee01, "")]
+  readsPrec _ "1 %" = [(Fee1, "")]
+
+derivePersistField "Fee"

@@ -4,11 +4,11 @@ import Import
 import qualified Bitgloom.BTC as Btc
 import qualified Data.Text as T (unpack)
 
-import Model.Configuration (retrieve)
+import qualified Bitgloom.Driver.Model.Configuration as Model
 
 getAnonymizeR :: Handler Html
 getAnonymizeR = do
-  config <- runDB retrieve
+  config <- runDB Model.retrieve
 
   accounts <- liftIO $ connectBtc config Btc.listAccounts
 
@@ -17,10 +17,10 @@ getAnonymizeR = do
     $(widgetFile "anonymize")
 
 -- | Validates hwether BTC is available
-connectBtc :: Configuration -> (Btc.Client -> IO a) -> IO a
+connectBtc :: Model.Configuration -> (Btc.Client -> IO a) -> IO a
 connectBtc config =
   Btc.withClient
-    ((T.unpack . configurationBtcHost) config)
-    (configurationBtcPort config)
-    (configurationBtcUsername config)
-    (configurationBtcPassword config)
+    ((T.unpack . Model.configurationBtcHost) config)
+    (Model.configurationBtcPort config)
+    (Model.configurationBtcUsername config)
+    (Model.configurationBtcPassword config)

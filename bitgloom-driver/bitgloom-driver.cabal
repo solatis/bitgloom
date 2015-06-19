@@ -11,9 +11,23 @@ library
   exposed-modules:     Bitgloom.Driver
                        Bitgloom.Driver.Types
 
+                       Bitgloom.Driver.Model
+                       Bitgloom.Driver.Model.Configuration
+                       Bitgloom.Driver.Model.Job
+                       
   build-depends:       base                     >= 4.3          && < 5
+                     , classy-prelude
+                     , classy-prelude-yesod
+                     
                      , crypto-random
                      , crypto-numbers
+                     
+                     , text
+                     , mtl
+                     , transformers
+                     
+                     , persistent
+                     , persistent-template           >= 2.1
                      
                      , bitcoin-types
 

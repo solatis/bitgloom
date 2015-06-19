@@ -34,3 +34,9 @@ spec = do
 
          elem Advertiser res `shouldBe` True
          elem Respondent res `shouldBe` True
+
+  describe "when serializing a fee" $ do
+    it "should be able to be read back" $ do
+      (read . show) Fee001 `shouldBe` Fee001
+      (read . show) Fee01 `shouldBe` Fee01
+      (read . show) Fee1 `shouldBe` Fee1

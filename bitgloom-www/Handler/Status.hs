@@ -5,12 +5,13 @@ import qualified Bitgloom.Tor as Tor
 import qualified Bitgloom.BTC as BTC
 import qualified Data.Text as T (unpack)
 
-import Model.Configuration (retrieve)
+import qualified Bitgloom.Driver.Model.Configuration as Model ( Configuration (..)
+                                                              , retrieve )
 
 getStatusR :: Handler Html
 getStatusR = do
    master    <- getYesod
-   config    <- runDB retrieve
+   config    <- runDB Model.retrieve
 
    torStatus <- testTor config
    btcStatus <- testBTC config
@@ -22,15 +23,15 @@ getStatusR = do
      $(widgetFile "status")
 
 -- | Validates whether Tor is available
-testTor :: MonadIO m => Configuration -> m Tor.Availability
+testTor :: MonadIO m => Model.Configuration -> m Tor.Availability
 testTor config =
-  Tor.isAvailable ((toInteger . configurationTorPort) config)
+  Tor.isAvailable ((toInteger . Model.configurationTorPort) config)
 
 -- | Validates hwether BTC is available
-testBTC :: MonadIO m => Configuration -> m BTC.Availability
+testBTC :: MonadIO m => Model.Configuration -> m BTC.Availability
 testBTC config =
   BTC.isAvailable
-    ((T.unpack . configurationBtcHost) config)
-    (configurationBtcPort config)
-    (configurationBtcUsername config)
-    (configurationBtcPassword config)
+    ((T.unpack . Model.configurationBtcHost) config)
+    (Model.configurationBtcPort config)
+    (Model.configurationBtcUsername config)
+    (Model.configurationBtcPassword config)

@@ -16,9 +16,8 @@ library
     exposed-modules: Application
                      Foundation
                      Import
+                     Import.Bitgloom
                      Import.NoFoundation
-                     Model
-                     Model.Configuration
                      Settings
                      Settings.StaticFiles
                      Handler.Common
