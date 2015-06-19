@@ -50,7 +50,6 @@ before_install:
  - travis_retry cabal update 
  - travis_retry cabal install happy alex
 
- - travis_retry sudo apt-get -q -y install hlint || cabal install hlint
  - cabal install cabal-meta
 
 # Generate some initial blocks
@@ -63,8 +62,4 @@ install:
  - travis_retry cabal-meta install -j --only-dependencies --enable-tests --enable-benchmarks --force-reinstalls
 
 script:
- - hlint bitgloom-btc/src --ignore="Parse error"
- - hlint bitgloom-driver/src --ignore="Parse error"
- - hlint bitgloom-www --ignore="Parse error" --ignore="Reduce duplication"
-
  - cabal-meta install --run-tests
