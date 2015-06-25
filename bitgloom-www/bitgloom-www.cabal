@@ -87,7 +87,9 @@ library
                  , time
                  , attoparsec
 
+                 , async-pool
                  , bifunctors
+
                  , bitcoin-types
                  , bitgloom-tor
                  , bitgloom-driver
@@ -100,5 +102,3 @@ executable         bitgloom-www
     main-is:           main.hs
     hs-source-dirs:    app
     build-depends:     base, bitgloom-www
-
-    ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N

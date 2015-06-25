@@ -8,18 +8,23 @@
 {-# LANGUAGE MultiParamTypeClasses      #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Bitgloom.Driver.Model.Job  where
+module Bitgloom.Driver.Job where
 
 import ClassyPrelude.Yesod
 
-import qualified Data.Bitcoin.Types as BT
-import Bitgloom.Driver.Types (Fee)
+import qualified Bitgloom.Driver.Model.Job           as Job
 
-share [mkPersist sqlSettings, mkMigrate "migrateJob"] [persistLowerCase|
-Job
-    iterationsLeft Int
-    btcLeft        BT.Btc
-    percentage     Fee
+create :: (MonadIO m, Functor m)
+       => Job.Job
+       -> ReaderT SqlBackend m (Key Job.Job)
+create job = do
+  jobId <- insert job
 
-    deriving Show
-|]
+  -- | _ <- liftIO $ forkSupervised supervisor oneForOne (worker job)
+
+  return jobId
+
+worker :: Job.Job
+       -> IO ()
+worker job =
+  putStrLn ("Now launching job: " <> tshow job)

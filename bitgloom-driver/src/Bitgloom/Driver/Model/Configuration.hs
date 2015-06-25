@@ -19,6 +19,8 @@ Configuration
     btcPort     Int
     btcUsername Text
     btcPassword Text
+
+    deriving Show
 |]
 
 store :: (PersistQuery (PersistEntityBackend s), MonadIO m, Functor m, PersistEntity s)

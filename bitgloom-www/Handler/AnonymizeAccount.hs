@@ -6,7 +6,6 @@ import Import
 import qualified Bitgloom.BTC as Btc
 import qualified Bitgloom.Driver.Types as Driver
 import qualified Data.Bitcoin.Types as BT
-import Data.Bifunctor (first)
 
 import qualified Data.Text as T (Text, pack, unpack)
 import Text.Read (readEither)
@@ -14,8 +13,7 @@ import Text.Read (readEither)
 import qualified Bitgloom.Driver.Model.Configuration as Model ( Configuration (..)
                                                               , retrieve)
 import qualified Bitgloom.Driver.Model.Job as Model ( Job (..) )
-
-import Debug.Trace (trace)
+import qualified Bitgloom.Driver.Job as Driver ( create )
 
 getAnonymizeAccountR :: T.Text -> Handler Html
 getAnonymizeAccountR accountId = do
@@ -30,16 +28,19 @@ getAnonymizeAccountR accountId = do
 postAnonymizeAccountR :: T.Text -> Handler Html
 postAnonymizeAccountR accountId = do
   config <- runDB Model.retrieve
-  ((result, widget), enctype) <- runFormPost (anonymizeForm config accountId)
+  ((result, _), _) <- runFormPost (anonymizeForm config accountId)
+
+  $(logDebug) ("Got form result: " <> tshow result)
 
   case result of
    FormSuccess job -> do
-     runDB $ insert job
-     setMessage "Configuration has been stored"
+     $(logDebug) ("Inserting job: " <> tshow job)
+     _ <- runDB $ insert job
+     setMessage "Anonymization has started!"
      redirect ConfigurationR
 
    FormMissing     -> error "Not a POST request!"
-   FormFailure err -> error "Invalid form data!"
+   FormFailure err -> error ("Invalid form data: " <> show err)
 
 connectBtc :: Model.Configuration -> (Btc.Client -> IO a) -> IO a
 connectBtc config =
@@ -51,7 +52,7 @@ connectBtc config =
 
 anonymizeForm :: Model.Configuration -> T.Text -> Html -> MForm Handler (FormResult Model.Job, Widget)
 anonymizeForm config accountId extra = do
-  balance <- liftIO $ getBalance config accountId
+  balance <- liftIO getBalance
 
   (iterationsRes, iterationsView) <- mreq intField "Minimum amount of rounds" (Just 10)
   (amountRes, amountView)         <- mreq btcField "BTC to anonymize" (Just balance)
@@ -66,7 +67,7 @@ anonymizeForm config accountId extra = do
   return (anonymizeJob, widget)
 
   where
-    getBalance config accountId =
+    getBalance =
       connectBtc config (`Btc.getAccountBalance` accountId)
 
     feeTypes :: [(Text, Driver.Fee)]

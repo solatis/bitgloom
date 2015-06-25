@@ -10,6 +10,7 @@ library
 
   exposed-modules:     Bitgloom.Driver
                        Bitgloom.Driver.Types
+                       Bitgloom.Driver.Job
 
                        Bitgloom.Driver.Model
                        Bitgloom.Driver.Model.Configuration
@@ -25,6 +26,8 @@ library
                      , text
                      , mtl
                      , transformers
+
+                     , async-pool
                      
                      , persistent
                      , persistent-template           >= 2.1
