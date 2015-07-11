@@ -20,7 +20,7 @@ create :: (MonadIO m, Functor m)
 create job = do
   jobId <- insert job
 
-  -- | _ <- liftIO $ forkSupervised supervisor oneForOne (worker job)
+  -- _ <- liftIO $ forkSupervised supervisor oneForOne (worker job)
 
   return jobId
 
