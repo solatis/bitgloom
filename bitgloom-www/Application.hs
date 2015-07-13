@@ -4,14 +4,17 @@ module Application
     , appMain
     , develMain
     , makeFoundation
+      
     -- * for DevelMain
     , getApplicationRepl
     , shutdownApp
+      
     -- * for GHCI
     , handler
     ) where
 
 import Control.Monad.Logger                 (liftLoc, runLoggingT)
+import Control.Concurrent (forkIO)
 import Database.Persist.Sqlite              (createSqlitePool, runSqlPool,
                                              sqlDatabase, sqlPoolSize)
 import Import
@@ -68,7 +71,7 @@ makeFoundation appSettings = do
     -- Create the database connection pool
     pool <- flip runLoggingT logFunc $ createSqlitePool
         (sqlDatabase $ appDatabaseConf appSettings)
-        (sqlPoolSize $ appDatabaseConf appSettings)
+        (sqlPoolSize $ appDatabaseConf appSettings)    
 
     -- Perform database migration using our application's logging settings.
     runLoggingT (runSqlPool (runMigration Model.migrate) pool) logFunc

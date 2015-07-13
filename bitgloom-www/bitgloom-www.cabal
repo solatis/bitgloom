@@ -87,7 +87,6 @@ library
                  , time
                  , attoparsec
 
-                 , async-pool
                  , bifunctors
 
                  , bitcoin-types

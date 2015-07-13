@@ -1,0 +1,1 @@
+module Bitgloom.Worker where

@@ -12,8 +12,8 @@ import Text.Read (readEither)
 
 import qualified Bitgloom.Driver.Model.Configuration as Model ( Configuration (..)
                                                               , retrieve)
-import qualified Bitgloom.Driver.Model.Job as Model ( Job (..) )
-import qualified Bitgloom.Driver.Job as Driver ( create )
+import qualified Bitgloom.Driver.Model.Job as Model ( Job (..)
+                                                    , store )
 
 getAnonymizeAccountR :: T.Text -> Handler Html
 getAnonymizeAccountR accountId = do
@@ -35,9 +35,12 @@ postAnonymizeAccountR accountId = do
   case result of
    FormSuccess job -> do
      $(logDebug) ("Inserting job: " <> tshow job)
-     _ <- runDB $ insert job
+     
+     -- Store the job inside the database, and our background worker
+     -- processes will automatically pick up on it.          
+     _ <- runDB $ Model.store job     
      setMessage "Anonymization has started!"
-     redirect ConfigurationR
+     redirect StatusR
 
    FormMissing     -> error "Not a POST request!"
    FormFailure err -> error ("Invalid form data: " <> show err)

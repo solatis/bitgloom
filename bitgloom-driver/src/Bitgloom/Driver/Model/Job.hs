@@ -23,3 +23,9 @@ Job
 
     deriving Show
 |]
+
+-- | Stores a new job inside the database and returns its identifier
+store :: (MonadIO m, Functor m)
+      => Job                            -- ^ Job we wish to create
+      -> ReaderT SqlBackend m (Key Job) -- ^ Returns unique identifier of Job we just created
+store = insert

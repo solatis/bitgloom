@@ -1,13 +1,12 @@
-{ mkDerivation, aeson, async-pool, attoparsec, base, bifunctors
-, bitcoin-types, bitgloom-btc, bitgloom-driver, bitgloom-tor
-, bytestring, classy-prelude, classy-prelude-conduit
-, classy-prelude-yesod, conduit, containers, data-default
-, directory, fast-logger, file-embed, hjsmin, http-conduit
-, monad-control, monad-logger, mtl, persistent, persistent-sqlite
-, persistent-template, safe, shakespeare, stdenv, template-haskell
-, text, time, unordered-containers, vector, wai-extra, wai-logger
-, warp, yaml, yesod, yesod-core, yesod-form, yesod-persistent
-, yesod-static
+{ mkDerivation, aeson, attoparsec, base, bifunctors, bitcoin-types
+, bitgloom-btc, bitgloom-driver, bitgloom-tor, bytestring
+, classy-prelude, classy-prelude-conduit, classy-prelude-yesod
+, conduit, containers, data-default, directory, fast-logger
+, file-embed, hjsmin, http-conduit, monad-control, monad-logger
+, mtl, persistent, persistent-sqlite, persistent-template, safe
+, shakespeare, stdenv, template-haskell, text, time
+, unordered-containers, vector, wai-extra, wai-logger, warp, yaml
+, yesod, yesod-core, yesod-form, yesod-persistent, yesod-static
 }:
 mkDerivation {
   pname = "bitgloom-www";
@@ -16,8 +15,8 @@ mkDerivation {
   isLibrary = true;
   isExecutable = true;
   buildDepends = [
-    aeson async-pool attoparsec base bifunctors bitcoin-types
-    bitgloom-btc bitgloom-driver bitgloom-tor bytestring classy-prelude
+    aeson attoparsec base bifunctors bitcoin-types bitgloom-btc
+    bitgloom-driver bitgloom-tor bytestring classy-prelude
     classy-prelude-conduit classy-prelude-yesod conduit containers
     data-default directory fast-logger file-embed hjsmin http-conduit
     monad-control monad-logger mtl persistent persistent-sqlite

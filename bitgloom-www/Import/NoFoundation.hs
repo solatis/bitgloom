@@ -3,7 +3,6 @@ module Import.NoFoundation
     ) where
 
 import           ClassyPrelude.Yesod           as Import
-import           Control.Concurrent.Async.Pool as Import (TaskGroup)
 import           Settings                      as Import
 import           Settings.StaticFiles          as Import
 import           Yesod.Core.Types              as Import (loggerSet)

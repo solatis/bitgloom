@@ -12,19 +12,12 @@ module Bitgloom.Driver.Job where
 
 import ClassyPrelude.Yesod
 
-import qualified Bitgloom.Driver.Model.Job           as Job
+import Database.Persist.Sql (ConnectionPool, runSqlPool)
+import qualified Control.Concurrent.Async.Pool as Pool 
+import qualified Bitgloom.Driver.Model.Job      as Job
 
-create :: (MonadIO m, Functor m)
-       => Job.Job
-       -> ReaderT SqlBackend m (Key Job.Job)
-create job = do
-  jobId <- insert job
-
-  -- _ <- liftIO $ forkSupervised supervisor oneForOne (worker job)
-
-  return jobId
-
-worker :: Job.Job
+worker :: ConnectionPool
+       -> Key Job.Job
        -> IO ()
-worker job =
+worker pool job =
   putStrLn ("Now launching job: " <> tshow job)
