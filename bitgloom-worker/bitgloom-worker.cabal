@@ -15,6 +15,7 @@ library
                      
                      , text
 
+                     , async
                      , async-pool
                      
                      , persistent
@@ -35,5 +36,11 @@ test-suite test-suite
                      , hspec-expectations
 
                      , network
+                     , transformers
 
+                     , persistent
+                     , persistent-sqlite
+                     , monad-logger
+
+                     , bitgloom-driver
                      , bitgloom-worker

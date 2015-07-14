@@ -31,6 +31,7 @@ import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
                                              toLogStr)
 
 import qualified Bitgloom.Driver.Model as Model ( migrate )
+import qualified Bitgloom.Worker as Worker ( runWorker )
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -75,6 +76,9 @@ makeFoundation appSettings = do
 
     -- Perform database migration using our application's logging settings.
     runLoggingT (runSqlPool (runMigration Model.migrate) pool) logFunc
+
+    -- Launch our background worker process
+    _ <- forkIO $ Worker.runWorker pool
 
     -- Return the foundation
     return $ mkFoundation pool

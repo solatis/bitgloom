@@ -93,6 +93,7 @@ library
                  , bitgloom-tor
                  , bitgloom-driver
                  , bitgloom-btc
+                 , bitgloom-worker
 
 executable         bitgloom-www
     if flag(library-only)
