@@ -1,4 +1,5 @@
 ./bitgloom-btc
 ./bitgloom-driver
 ./bitgloom-tor
+./bitgloom-worker
 ./bitgloom-www
