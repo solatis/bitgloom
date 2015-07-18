@@ -10,11 +10,19 @@ import Database.Persist.Sql ( ConnectionPool
 import Database.Persist.Sqlite ( createSqlitePool )
 
 
+import Control.Concurrent.Async.Pool ( TaskGroup
+                                     , createPool
+                                     , createTaskGroup
+                                     , async
+                                     , runTaskGroup )
+
 import Bitgloom.Driver.Types (Fee (Fee1))
 import qualified Bitgloom.Driver.Model as Model ( migrate )
 import qualified Bitgloom.Driver.Model.Job as Job ( Job (..)
                                                   , store )
-import qualified Bitgloom.Worker as Worker ( runWorker )
+import qualified Bitgloom.Worker as Worker ( AnonymizeTaskGroup (..)
+                                           , PollTaskGroup (..)
+                                           , runWorker )
 
 import Test.Hspec
 import Test.Hspec.Expectations
@@ -39,7 +47,11 @@ spec =
       let job = Job.Job 10 10 Fee1
 
       in withDb $ \pool -> do
-        Worker.runWorker pool
+        taskPool <- createPool
+        pollTaskGroup <- createTaskGroup taskPool 1
+        anonymizeTaskGroup <- createTaskGroup taskPool 4
+        
+        Worker.runWorker pool (Worker.PollTaskGroup pollTaskGroup) (Worker.AnonymizeTaskGroup anonymizeTaskGroup)
         _ <- runSqlPool (Job.store job) pool
         return ()
                 

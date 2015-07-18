@@ -41,6 +41,7 @@ test-suite test-suite
                      , persistent
                      , persistent-sqlite
                      , monad-logger
+                     , async-pool
 
                      , bitgloom-driver
                      , bitgloom-worker
