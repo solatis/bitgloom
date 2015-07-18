@@ -1,29 +1,22 @@
 module Bitgloom.Worker where
 
+import Control.Monad ( void )
+
 import Database.Persist.Sql ( ConnectionPool
                             , runSqlPool)
 
 import Control.Concurrent.Async ( mapConcurrently )
 import Control.Concurrent.Async.Pool ( TaskGroup
-                                     , createPool
-                                     , createTaskGroup
                                      , async
                                      , runTaskGroup )
 
 runWorker :: ConnectionPool -- ^ Access to our Sqlite database
+          -> TaskGroup      -- ^ The group for our Poll tasks
+          -> TaskGroup      -- ^ The group of our Anonymize tasks
           -> IO ()          -- ^ Should never return
-runWorker dbPool = do
-  taskPool     <- createPool
-
-  -- The tasks that will be used for polling whether new jobs are
-  -- inserted into the database.
-  pollTasks <- createTaskGroup taskPool 1
-
-  -- The tasks that handle the processing of the actual Jobs
-  anonymizeTasks <- createTaskGroup taskPool 4
-
-  -- Bootstrap initial tasks by polling the database  
-  _ <- async pollTasks (pollTask dbPool pollTasks anonymizeTasks)  
+runWorker dbPool pollTasks anonymizeTasks = do
+  -- Bootstrap initial tasks by polling the database 
+  submitPollTask dbPool pollTasks anonymizeTasks
 
   -- This should be a never-ending function, since runTaskGroup
   -- never returns, unless an exception is thrown; if this is the
@@ -32,6 +25,15 @@ runWorker dbPool = do
   _ <- mapConcurrently runTaskGroup [pollTasks, anonymizeTasks]
 
   return ()
+
+-- | Generates a new Poll task and submits it onto the correct
+--   TaskGroup
+submitPollTask :: ConnectionPool -- ^ Access to our Sqlite database
+               -> TaskGroup      -- ^ The group of our Poll tasks
+               -> TaskGroup      -- ^ The group of our Anonymize tasks
+               -> IO ()
+submitPollTask dbPool pollTasks anonymizeTasks =
+  void $ async pollTasks (pollTask dbPool pollTasks anonymizeTasks)
 
 -- | Polls the database whether new jobs are submitted into the
 --   database.

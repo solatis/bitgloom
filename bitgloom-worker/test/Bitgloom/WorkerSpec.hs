@@ -9,7 +9,11 @@ import Database.Persist.Sql ( ConnectionPool
                             , runSqlPool )
 import Database.Persist.Sqlite ( createSqlitePool )
 
+
+import Bitgloom.Driver.Types (Fee (Fee1))
 import qualified Bitgloom.Driver.Model as Model ( migrate )
+import qualified Bitgloom.Driver.Model.Job as Job ( Job (..)
+                                                  , store )
 import qualified Bitgloom.Worker as Worker ( runWorker )
 
 import Test.Hspec
@@ -31,9 +35,13 @@ withDb cb = do
 spec :: Spec
 spec = 
   describe "when creating a new job" $ do
-    it "worker should pick up the job within 3 seconds" $ 
-      withDb $ \pool -> do
+    it "worker should pick up the job within 3 seconds" $
+      let job = Job.Job 10 10 Fee1
+
+      in withDb $ \pool -> do
         Worker.runWorker pool
+        _ <- runSqlPool (Job.store job) pool
+        return ()
                 
 
       
