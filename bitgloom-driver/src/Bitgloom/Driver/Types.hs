@@ -31,3 +31,13 @@ instance Read Fee where
   readsPrec _ "1 %" = [(Fee1, "")]
 
 derivePersistField "Fee"
+
+data JobState =
+  JobStateNew |
+  JobStateAccepted |
+  JobStateWorking |
+  JobStateFailure |
+  JobStateSuccess
+  deriving (Eq, Show, Read)
+
+derivePersistField "JobState"
