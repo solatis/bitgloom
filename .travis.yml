@@ -6,7 +6,9 @@ env:
 
 matrix:
   allow_failures:
-   - env: CABALVER=1.22 GHCVER=head
+   - env:
+      - CABALVER=1.22 GHCVER=7.8.4       
+      - CABALVER=1.22 GHCVER=head
     
 before_install:
  - travis_retry sudo apt-add-repository -y ppa:bitcoin/bitcoin
