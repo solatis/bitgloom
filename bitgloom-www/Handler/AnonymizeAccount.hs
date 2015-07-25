@@ -13,6 +13,7 @@ import Text.Read (readEither)
 import qualified Bitgloom.Driver.Model.Configuration as Model ( Configuration (..)
                                                               , retrieve)
 import qualified Bitgloom.Driver.Model.Job as Model ( Job (..)
+                                                    , defaultJobState
                                                     , store )
 
 getAnonymizeAccountR :: T.Text -> Handler Html
@@ -64,6 +65,7 @@ anonymizeForm config accountId extra = do
   let anonymizeJob = Model.Job <$> iterationsRes
                                <*> amountRes
                                <*> percentageRes
+                               <*> (pure Model.defaultJobState)
 
   let widget = $(widgetFile "anonymize-account-form")
 

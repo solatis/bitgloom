@@ -78,7 +78,7 @@ makeFoundation appSettings = do
     runLoggingT (runSqlPool (runMigration Model.migrate) pool) logFunc
 
     -- Launch our background worker process
-    _ <- forkIO $ Worker.runWorker pool
+    -- _ <- forkIO $ Worker.runWorker pool
 
     -- Return the foundation
     return $ mkFoundation pool
